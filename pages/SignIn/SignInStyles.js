@@ -9,10 +9,30 @@ const SignInstyles = EStyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    height: "5rem",
-    width: "10rem",
+    height: "2rem",
+    width: "80%",
     margin: 12,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+  },
+  label: {
+    alignSelf: "flex-end",
+    marginRight: "10%",
+    color: "#577BF9",
+  },
+  SignInView: {
+    width: "80%",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    // flexWrap: "wrap",
+  },
+  SignUpView: {
+    flexDirection: "row-reverse",
+  },
+  RegularText: {
+    color: "black",
+  },
+  BlueText: {
+    color: "#577BF9",
   },
 });
 export default SignInstyles;
