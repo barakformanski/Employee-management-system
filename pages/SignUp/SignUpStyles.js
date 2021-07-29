@@ -1,14 +1,17 @@
 import { StyleSheet } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
-const SignInstyles = EStyleSheet.create({
+const SignUpstyles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-
+  header: {
+    alignSelf: "flex-end",
+    marginRight: "10%",
+  },
   input: {
     height: "2rem",
     width: "80%",
@@ -36,4 +39,4 @@ const SignInstyles = EStyleSheet.create({
     color: "#577BF9",
   },
 });
-export default SignInstyles;
+export default SignUpstyles;

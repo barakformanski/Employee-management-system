@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button, View, Text, StyleSheet, TextInput } from "react-native";
+import { Button, View, Text, TextInput } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -19,7 +19,7 @@ export default function SignIn({ navigation }) {
         value={email}
         placeholder={"email"}
       />
-      {email ? <Text style={SignInstyles.label}>Password</Text> : null}
+      {password ? <Text style={SignInstyles.label}>Password</Text> : null}
       <TextInput
         style={SignInstyles.input}
         onChangeText={onChangePass}

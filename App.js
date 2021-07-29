@@ -6,7 +6,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn/SignIn";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/SignUp/SignUp";
 
 const Stack = createStackNavigator();
 const ThemeContext = React.createContext("light");
