@@ -2,26 +2,20 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import axios from "axios";
+import Axios from "axios";
 export default function Home({ navigation, route }) {
   const { email } = route.params;
   const [test, setTest] = useState(false);
   useEffect(() => {
-    axios
-      .get("http://10.0.2.2:3000")
-      .then(function (response) {
-        // handle success
-        alert(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        // handle error
-        alert(error.message);
-      })
-      .finally(function () {
-        // always executed
-        alert("Finally called");
-      });
-    setTest(false);
+    Axios({
+      method: "GET",
+      url: "http://192.168.25.63:5000/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      console.log(res.data.message);
+    });
   }, [test]);
 
   return (
