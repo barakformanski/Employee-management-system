@@ -24,6 +24,7 @@ connectToDB().then(() => {
   });
 });
 
+// GET ALL EMPLOYEES
 app.get("/", async (req, res) => {
   const employees = await Employee.find();
 
@@ -35,12 +36,35 @@ app.get("/", async (req, res) => {
   }
 });
 
+// GET EMPLOYEE FROM SIGN IN
+app.post(`/signIn`, async (req, res) => {
+  console.log("check post req", req.body);
+  const employee = await Employee.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  });
+  console.log("EMPLOYEE TO SIGNIN:", employee);
+
+  try {
+    // await employee.save();
+    res.send(employee);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 app.post(`/signUp`, async (req, res) => {
-  // const employee = new Employee(req.body);
+  console.log("checkPOst");
+  const employees = await Employee.find();
+  console.log(
+    "checkPOST:",
+    employees.map((emp) => emp.email === req.body.email)
+  );
+
   const employee = new Employee(req.body);
 
   try {
-    await employee.save();
+    // await employee.save();
     res.send(employee);
   } catch (err) {
     res.status(500).send(err);
