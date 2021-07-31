@@ -46,26 +46,47 @@ app.post(`/signIn`, async (req, res) => {
   console.log("EMPLOYEE TO SIGNIN:", employee);
 
   try {
-    // await employee.save();
     res.send(employee);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-app.post(`/signUp`, async (req, res) => {
-  console.log("checkPOst");
-  const employees = await Employee.find();
-  console.log(
-    "checkPOST:",
-    employees.map((emp) => emp.email === req.body.email)
-  );
-
-  const employee = new Employee(req.body);
+// FORGET PASSWORD- not finished on client side
+app.post(`/forget_pass`, async (req, res) => {
+  console.log("check post req", req.body);
+  const employee = await Employee.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  });
+  console.log("EMPLOYEE TO SIGNIN:", employee);
 
   try {
-    // await employee.save();
     res.send(employee);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// SIGNUP A NEW EMPLOYEE
+app.post(`/signUp`, async (req, res) => {
+  console.log("checkPOst");
+  let employee = "";
+  let checkEmployee = await Employee.findOne({
+    email: req.body.email,
+  });
+
+  if (!checkEmployee) {
+    employee = new Employee(req.body);
+  }
+
+  try {
+    if (employee) {
+      await employee.save();
+      res.send(employee);
+    } else {
+      res.send("");
+    }
   } catch (err) {
     res.status(500).send(err);
   }

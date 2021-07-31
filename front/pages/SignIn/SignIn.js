@@ -26,8 +26,45 @@ export default function SignIn({ navigation }) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      console.log(res.data);
-      navigation.navigate("Home", { email: res.email, password: res.password });
+      console.log("res.data", res.data);
+      {
+        !res.data
+          ? alert("user not fond")
+          : navigation.navigate("Home", {
+              email: res.email,
+              password: res.password,
+            });
+      }
+    });
+  };
+
+  // not finisehd
+  const forgetPass = () => {
+    console.log("check post req");
+    // stages:
+    // 1 / enter ur email
+    // 2 / send pass to email or to cell
+    // 3/ update pass in DB
+
+    axios({
+      method: "POST",
+      url: "http://192.168.85.63:5000/forget_pass",
+      data: {
+        email: email,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      console.log("res.data", res.data);
+      {
+        !res.data
+          ? alert("user not fond")
+          : navigation.navigate("Home", {
+              email: res.email,
+              password: res.password,
+            });
+      }
     });
   };
 

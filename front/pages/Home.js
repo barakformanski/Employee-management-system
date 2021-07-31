@@ -7,25 +7,27 @@ export default function Home({ navigation, route }) {
   const { email } = route.params;
   const [employee, setEmployee] = useState("you have to sign in first");
   const [test, setTest] = useState(false);
-  useEffect(() => {
-    console.log("get check");
-    axios({
-      method: "GET",
-      url: "http://192.168.85.63:5000/",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      console.log("res:", res);
-      setEmployee(res.data[0].email);
-      console.log("res.data", res.data[0].email);
-    });
-  }, [test]);
+  // useEffect(() => {
+  //   console.log("get check");
+  //   axios({
+  //     method: "GET",
+  //     url: "http://192.168.85.63:5000/",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then((res) => {
+  //     console.log("res:", res);
+  //     setEmployee(res.data[0].email);
+  //     console.log("res.data", res.data[0].email);
+  //   });
+  // }, [test]);
 
   return (
     <View style={styles.container}>
-      {/* <Text>welcome, {email}!</Text> */}
-      <Text>welcome, {employee}!</Text>
+      {email ? <Text>welcome, {email}!</Text> :
+        <Text>welcome, {employee}!</Text>
+      }
+      {/* <Text>welcome, {employee}!</Text> */}
 
       <Button
         title="axios tester"
