@@ -10,17 +10,17 @@ const SignUpstyles = EStyleSheet.create({
   },
   header: {
     alignSelf: "flex-end",
-    marginRight: "10%",
+    marginRight: "25%",
   },
   input: {
     height: "2rem",
-    width: "80%",
+    width: "60%",
     margin: 12,
     borderBottomWidth: 1,
   },
   label: {
     alignSelf: "flex-end",
-    marginRight: "10%",
+    marginRight: "25%",
     color: "#577BF9",
   },
   SignInView: {

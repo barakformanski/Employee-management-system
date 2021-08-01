@@ -11,7 +11,6 @@ import axios from "axios";
 import {
   validateEmail,
   validatePassword,
-  validateName,
 } from "../../utils/components/validation";
 import { Ionicons } from "@expo/vector-icons";
 

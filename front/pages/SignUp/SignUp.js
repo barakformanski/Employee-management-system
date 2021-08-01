@@ -6,6 +6,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignUpstyles from "./SignUpStyles";
 import axios from "axios";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../utils/components/validation";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignUp({ navigation }) {
   const [firstName, onChangeFirstName] = useState("");
@@ -44,57 +50,101 @@ export default function SignUp({ navigation }) {
   };
 
   const validation = () => {
-    firstName &&
-      lastName &&
-      email &&
-      password &&
-      retypePassword &&
+    if (
+      validateName(firstName) &&
+      validateName(lastName) &&
+      validateEmail(email) &&
+      validatePassword(password) &&
+      password === retypePassword
+    ) {
       SignUpEmployee();
+    } else {
+      alert("you have to fill he inputs properly first");
+    }
   };
 
   return (
     <View style={SignUpstyles.container}>
       <Text style={SignUpstyles.header}>Personal Details</Text>
+
       {firstName ? <Text style={SignUpstyles.label}>First Name</Text> : null}
-      <TextInput
-        style={SignUpstyles.input}
-        onChangeText={onChangeFirstName}
-        value={firstName}
-        placeholder={"firstName"}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignUpstyles.input}
+          onChangeText={onChangeFirstName}
+          value={firstName}
+          placeholder={"firstName"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validateName(firstName) === false ? "transparent" : "green"}
+        />
+      </View>
+
       {lastName ? <Text style={SignUpstyles.label}>Last Name</Text> : null}
-      <TextInput
-        style={SignUpstyles.input}
-        onChangeText={onChangeLastName}
-        value={lastName}
-        placeholder={"lastName"}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignUpstyles.input}
+          onChangeText={onChangeLastName}
+          value={lastName}
+          placeholder={"lastName"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validateName(lastName) === false ? "transparent" : "green"}
+        />
+      </View>
+
       {email ? <Text style={SignUpstyles.label}>Email</Text> : null}
-      <TextInput
-        style={SignUpstyles.input}
-        onChangeText={onChangeEmail}
-        value={email}
-        placeholder={"email"}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignUpstyles.input}
+          onChangeText={onChangeEmail}
+          value={email}
+          placeholder={"email"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validateEmail(email) === false ? "transparent" : "green"}
+        />
+      </View>
+
       <Text style={SignUpstyles.header}>Password</Text>
 
       {password ? <Text style={SignUpstyles.label}>Password</Text> : null}
-      <TextInput
-        style={SignUpstyles.input}
-        onChangeText={onChangePass}
-        value={password}
-        placeholder={"password"}
-      />
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignUpstyles.input}
+          onChangeText={onChangePass}
+          value={password}
+          placeholder={"password"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validatePassword(password) === false ? "transparent" : "green"}
+        />
+      </View>
       {retypePassword ? (
         <Text style={SignUpstyles.label}>retype Password</Text>
       ) : null}
-      <TextInput
-        style={SignUpstyles.input}
-        onChangeText={onChangeRetypePassword}
-        value={retypePassword}
-        placeholder={"retypePassword"}
-      />
-
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignUpstyles.input}
+          onChangeText={onChangeRetypePassword}
+          value={retypePassword}
+          placeholder={"retypePassword"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={password !== retypePassword ? "transparent" : "green"}
+        />
+      </View>
       <Button title="Sign Up" onPress={() => validation()} />
 
       <View style={SignUpstyles.SignUpView}>
