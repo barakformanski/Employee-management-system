@@ -8,6 +8,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignInstyles from "./SignInStyles";
 import axios from "axios";
 
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../utils/components/validation";
+import { Ionicons } from "@expo/vector-icons";
+
+// import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+// import { faCheckCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 export default function SignIn({ navigation }) {
   const [email, onChangeEmail] = useState("");
   const [password, onChangePass] = useState("");
@@ -71,19 +81,34 @@ export default function SignIn({ navigation }) {
   return (
     <View style={SignInstyles.container}>
       {email ? <Text style={SignInstyles.label}>Email</Text> : null}
-      <TextInput
-        style={SignInstyles.input}
-        onChangeText={onChangeEmail}
-        value={email}
-        placeholder={"email"}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignInstyles.input}
+          onChangeText={onChangeEmail}
+          value={email}
+          placeholder={"email"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validateEmail(email) === false ? "transparent" : "green"}
+        />
+      </View>
+
       {password ? <Text style={SignInstyles.label}>Password</Text> : null}
-      <TextInput
-        style={SignInstyles.input}
-        onChangeText={onChangePass}
-        value={password}
-        placeholder={"password"}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TextInput
+          style={SignInstyles.input}
+          onChangeText={onChangePass}
+          value={password}
+          placeholder={"password"}
+        />
+        <Ionicons
+          name="md-checkmark-circle"
+          size={32}
+          color={validatePassword(password) === false ? "transparent" : "green"}
+        />
+      </View>
       <View style={SignInstyles.SignInView}>
         <Text style={SignInstyles.BlueText}>Forget password?</Text>
         <Button
