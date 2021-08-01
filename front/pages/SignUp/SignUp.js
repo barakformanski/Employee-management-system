@@ -142,7 +142,11 @@ export default function SignUp({ navigation }) {
         <Ionicons
           name="md-checkmark-circle"
           size={32}
-          color={password !== retypePassword ? "transparent" : "green"}
+          color={
+            retypePassword && password === retypePassword
+              ? "green"
+              : "transparent"
+          }
         />
       </View>
       <Button title="Sign Up" onPress={() => validation()} />

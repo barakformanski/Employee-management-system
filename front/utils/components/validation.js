@@ -24,3 +24,25 @@ export const validatePassword = (text) => {
     return false;
   }
 };
+
+export const validatePhone = (text) => {
+  let isnum = /^\d+$/.test(text);
+  let length = text.length;
+
+  // console.log("isnum : ", isnum);
+
+  if (length === 10 && isnum) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const validateAddress = (text) => {
+  let reg = /^[a-zA-Z\u0590-\u05FF\u200f\u200e\1-9 ]+$/i;
+  if (reg.test(text) === false) {
+    return false;
+  } else {
+    return true;
+  }
+};

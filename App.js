@@ -91,3 +91,27 @@ app.post(`/signUp`, async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+// ADD A NEW EMPLOYEE
+app.post(`/add_employee`, async (req, res) => {
+  console.log("checkPOst");
+  let employee = "";
+  let checkEmployee = await Employee.findOne({
+    phone: req.body.phone,
+  });
+
+  if (!checkEmployee) {
+    employee = new Employee(req.body);
+  }
+
+  try {
+    if (employee) {
+      await employee.save();
+      res.send(employee);
+    } else {
+      res.send("");
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});

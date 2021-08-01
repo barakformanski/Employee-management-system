@@ -7,6 +7,8 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
+import AddEmployees from "./pages/addEmployees/AddEmployees";
+import ManageEmployees from "./pages/manageEmployees/MangeEmployees";
 
 const Stack = createStackNavigator();
 const ThemeContext = React.createContext("light");
@@ -35,6 +37,16 @@ export default function App() {
           name="SignUp"
           component={SignUp}
           options={{ title: "Sign Up" }}
+        />
+        <Stack.Screen
+          name="AddEmployees"
+          component={AddEmployees}
+          options={{ title: "Add Employees" }}
+        />
+        <Stack.Screen
+          name="ManageEmployees"
+          component={ManageEmployees}
+          options={{ title: "manage Employees" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
