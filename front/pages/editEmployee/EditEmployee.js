@@ -30,12 +30,12 @@ export default function EditEmployee({ navigation, route }) {
   const [image, onChangeImage] = useState("");
   const [dataArrived, setDataArrived] = useState(false);
   useEffect(() => {
-    console.log("employee");
-    onChangeFirstName(employee["first_name"]);
-    onChangeLastName(employee["last_name"]);
-    onChangeAddress(employee["address"]);
-    onChangeRoll(employee["roll"]);
-    onChangePhone(employee["phone"]);
+    console.log("employee", employee);
+    employee["first_name"] ? onChangeFirstName(employee["first_name"]) : null;
+    employee["last_name"] ? onChangeLastName(employee["last_name"]) : null;
+    employee["address"] ? onChangeAddress(employee["address"]) : null;
+    employee["roll"] ? onChangeRoll(employee["roll"]) : null;
+    employee["phone"] ? onChangePhone(employee["phone"]) : null;
     onChangeImage(
       employee["avatar"]
         ? employee["avatar"]

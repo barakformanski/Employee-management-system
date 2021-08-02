@@ -16,7 +16,16 @@ export default function ManageEmployees({ navigation, route }) {
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-
+  function avatarLetters(first, last) {
+    console.log(first, last);
+    if (first && last) {
+      return first.charAt(0) + last.charAt(0);
+    } else if (first || last) {
+      return first.charAt(0) || last.charAt(0);
+    } else {
+      return "??";
+    }
+  }
   const [employees, setEmployees] = useState([]);
   const [avatarNum, setAvatarNum] = useState(randomIntFromInterval(300, 1000));
   const [modalVisible, setModalVisible] = useState(false);
@@ -58,20 +67,36 @@ export default function ManageEmployees({ navigation, route }) {
           employees.map((employee, index) => {
             return (
               <Card key={index}>
-                <Avatar
-                  onPress={
-                    () =>
+                {employee.avatar ? (
+                  <Avatar
+                    containerStyle={{ backgroundColor: "#d3d3d3" }}
+                    onPress={
+                      () =>
+                        navigation.navigate("EditEmployee", {
+                          employee: employee,
+                        })
+
+                      // setModalVisible(true)
+                    }
+                    rounded
+                    source={{ uri: employee.avatar }}
+                    title="MD"
+                  />
+                ) : (
+                  <Avatar
+                    containerStyle={{ backgroundColor: "#d3d3d3" }}
+                    onPress={() =>
                       navigation.navigate("EditEmployee", {
                         employee: employee,
                       })
-
-                    // setModalVisible(true)
-                  }
-                  rounded
-                  source={{
-                    uri: employee.avatar,
-                  }}
-                />
+                    }
+                    rounded
+                    title={avatarLetters(
+                      employee.first_name,
+                      employee.last_name
+                    )}
+                  />
+                )}
 
                 {/* <Modal
                   animationType="slide"
