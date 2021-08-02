@@ -5,6 +5,11 @@ const EmployeeSchema = new mongoose.Schema({
   last_name: String,
   email: String,
   password: String,
+  phone: String,
+  address: String,
+  roll: String,
+  avatar:String,
+  img: { data: Buffer, contentType: String }
 });
 
 module.exports = mongoose.model("Employee", EmployeeSchema);

@@ -31,7 +31,8 @@ export const validatePhone = (text) => {
 
   // console.log("isnum : ", isnum);
 
-  if (length === 10 && isnum) {
+  if (length >= 1 && isnum) {
+    // if (length === 10 && isnum) {
     return true;
   } else {
     return false;

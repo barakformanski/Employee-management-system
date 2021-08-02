@@ -1,9 +1,12 @@
-const express = require("express"); //Line 1
-const app = express(); //Line 2
-const PORT = process.env.PORT || 5000; //Line 3
+const express = require("express"); 
+const fs = require('fs')
+const app = express(); 
+const PORT = process.env.PORT || 5000; 
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const multer = require('multer');
+
 const connectToDB = require("./connectToDB");
 const http = require("http");
 const server = http.createServer(app);
@@ -14,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+
 connectToDB().then(() => {
   server.listen(PORT, () => {
     console.log(
@@ -21,9 +25,30 @@ connectToDB().then(() => {
       PORT,
       "   and connected to Mongo DB"
     );
+    
   });
+
 });
 
+// app.use(multer({ dest: ‘./uploads/’,
+//  rename: function (fieldname, filename) {
+//    return filename;
+//  },
+// }));
+
+// MANAGE EMPLOYERS
+app.put(`/set_employee`, async (req, res) => {
+  try {
+    console.log("update to this:", req.body);
+    const employee = await Employee.findByIdAndUpdate(
+      { _id: req.body._id },
+      req.body
+    );
+    res.send(employee);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 // GET ALL EMPLOYEES
 app.get("/", async (req, res) => {
   const employees = await Employee.find();
@@ -31,6 +56,19 @@ app.get("/", async (req, res) => {
   try {
     console.log("employees:", employees);
     res.send(employees);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// DELETE EMPLOYEE
+app.delete(`/:id`, async (req, res) => {
+  console.log("req params delete:", req.params);
+  try {
+    const employee = await Employee.findByIdAndDelete(req.params.id);
+    const updatedEmployees = await Employee.find();
+    if (!employee) res.status(404).send("No item found");
+    res.status(200).send(updatedEmployees);
   } catch (err) {
     res.status(500).send(err);
   }

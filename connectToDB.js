@@ -8,5 +8,6 @@ module.exports = function connectToDB() {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   });
 };

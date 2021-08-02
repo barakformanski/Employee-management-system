@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import AddEmployees from "./pages/addEmployees/AddEmployees";
 import ManageEmployees from "./pages/manageEmployees/MangeEmployees";
+import EditEmployee from "./pages/editEmployee/EditEmployee";
 
 const Stack = createStackNavigator();
 const ThemeContext = React.createContext("light");
@@ -47,6 +48,11 @@ export default function App() {
           name="ManageEmployees"
           component={ManageEmployees}
           options={{ title: "manage Employees" }}
+        />
+        <Stack.Screen
+          name="EditEmployee"
+          component={EditEmployee}
+          options={{ title: "Edit Employee" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

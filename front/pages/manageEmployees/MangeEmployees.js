@@ -1,47 +1,117 @@
+import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
-import { Card, ListItem, Button, Icon } from "react-native-elements";
+import {
+  View,
+  Text,
+  ScrollView,
+  Modal,
+  Pressable,
+  TextInput,
+} from "react-native";
+import { Card, ListItem, Button, Icon, Avatar } from "react-native-elements";
 import ManageEmployeesStyles from "./ManageEmployeesStyles";
-export default function ManageEmployees({ navigation, route }) {
-  const users = [
-    {
-      name: "brynn",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-    },
-    {
-      name: "brynn",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-    },
-    // more users here
-  ];
-  const [employees, setEmployees] = useState([]);
 
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: "http://192.168.85.63:5000/",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      console.log("res.data", res.data);
-      {
-        !res.data ? alert("DB is empty") : setEmployees(res.data);
-      }
+export default function ManageEmployees({ navigation, route }) {
+  function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  const [employees, setEmployees] = useState([]);
+  const [avatarNum, setAvatarNum] = useState(randomIntFromInterval(300, 1000));
+  const [modalVisible, setModalVisible] = useState(false);
+  const deleteQuery = (idToDelete) => {
+    console.log("id to delete:", idToDelete);
+    axios.delete(`http://192.168.85.63:5000/${idToDelete}`).then((res) => {
+      console.log("resFROMserver DELETE", res.data);
+      alert("employee number", idToDelete, "deleted");
+      setEmployees(res.data);
     });
-  }, []);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("GET TRIGGED");
+      axios({
+        method: "GET",
+        url: "http://192.168.85.63:5000/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log("res.data", res.data);
+        {
+          !res.data ? alert("DB is empty") : setEmployees(res.data);
+        }
+      });
+    }, [])
+  );
+
   return (
     <View style={ManageEmployeesStyles.container}>
+      <Button
+        title="Add Employees"
+        onPress={() => navigation.navigate("AddEmployees")}
+      />
       <ScrollView>
         {employees &&
           employees.map((employee, index) => {
             return (
               <Card key={index}>
-                <Card.Title>{`${employee.first_name} ${employee.last_name} `}</Card.Title>
-                <Card.Title>{`${employee.roll} `}</Card.Title>
-                <Card.Title>{`${employee.first_name} ${employee.last_name} `}</Card.Title>
-                <Card.Title>{`${employee.first_name} ${employee.last_name} `}</Card.Title>
+                <Avatar
+                  onPress={
+                    () =>
+                      navigation.navigate("EditEmployee", {
+                        employee: employee,
+                      })
+
+                    // setModalVisible(true)
+                  }
+                  rounded
+                  source={{
+                    uri: employee.avatar,
+                  }}
+                />
+
+                {/* <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={ManageEmployeesStyles.centeredView}>
+                    <View style={ManageEmployeesStyles.modalView}>
+                      <Text style={ManageEmployeesStyles.modalText}>
+                        Hello World!
+                      </Text>
+                      <TextInput
+                        style={ManageEmployeesStyles.input}
+                        onChangeText={setAvatarNum}
+                        value={avatarNum}
+                        placeholder={"choose num between 300-1000"}
+                      />
+                      <Pressable
+                        style={[
+                          ManageEmployeesStyles.button,
+                          ManageEmployeesStyles.buttonClose,
+                        ]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={ManageEmployeesStyles.textStyle}>
+                          Hide Modal
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal> */}
+
+                <Card.Title>{`name:${employee.first_name} ${employee.last_name} `}</Card.Title>
+                <Card.Title>{`roll:${employee.roll} `}</Card.Title>
+                <Card.Title>{`phone:${employee.phone}`}</Card.Title>
+                <Card.Title>{`address:${employee.address}`}</Card.Title>
 
                 <Button
                   icon={<Icon name="code" color="#ffffff" />}
@@ -51,7 +121,21 @@ export default function ManageEmployees({ navigation, route }) {
                     marginRight: 0,
                     marginBottom: 0,
                   }}
-                  title="VIEW NOW"
+                  title="EDIT"
+                  onPress={() =>
+                    navigation.navigate("EditEmployee", { employee: employee })
+                  }
+                />
+                <Button
+                  icon={<Icon name="code" color="#ffffff" />}
+                  buttonStyle={{
+                    borderRadius: 0,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 0,
+                  }}
+                  title="DELETE"
+                  onPress={() => deleteQuery(employee._id)}
                 />
                 {/* </Card.Image> */}
               </Card>

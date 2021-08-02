@@ -15,22 +15,12 @@ export default function Home({ navigation, route }) {
       ) : (
         <Text>welcome, {employee}!</Text>
       )}
-      {/* <Text>welcome, {employee}!</Text> */}
 
-      <Button
-        title="axios tester"
-        onPress={
-          () => setTest(!test)
-          // {
-          // SignUp();
-          // }
-        }
-      />
       <Button title="Sign In" onPress={() => navigation.navigate("SignIn")} />
       <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")} />
       <Button
-        title="Add Employees"
-        onPress={() => navigation.navigate("AddEmployees")}
+        title="Employees Managment"
+        onPress={() => navigation.navigate("ManageEmployees")}
       />
     </View>
   );

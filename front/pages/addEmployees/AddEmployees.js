@@ -22,35 +22,31 @@ export default function AddEmployees({ navigation }) {
   const [roll, onChangeRoll] = useState("");
 
   const AddEmployee = () => {
-    console.log("check post req");
-    // navigation.navigate("ManageEmployees", { phone: res.data.phone });
-    navigation.navigate("ManageEmployees", { phone: phone });
-
-    // axios({
-    //   method: "POST",
-    //   url: "http://192.168.85.63:5000/add_employee",
-    //   data: {
-    //     fisrtName: firstName,
-    //     lastName: lastName,
-    //     phone: phone,
-    //     address: address,
-    //     roll: roll,
-    //   },
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then((res) => {
-    //   console.log("res.data", res.data);
-    //   {
-    //     !res.data
-    //       ? alert("employee alreadt exist")
-    //       : navigation.navigate("Home", {
-    //           email: res.data.email,
-    //           password: res.data.password,
-    //         });
-    //   }
-    //   navigation.navigate("ManageEmployees", { phone: res.data.phone });
-    // });
+    axios({
+      method: "POST",
+      url: "http://192.168.85.63:5000/add_employee",
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        address: address,
+        roll: roll,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      console.log("res.data", res.data);
+      {
+        !res.data
+          ? alert("employee alreadt exist")
+          : navigation.navigate("Home", {
+              email: res.data.email,
+              password: res.data.password,
+            });
+      }
+      navigation.navigate("ManageEmployees", { phone: res.data.phone });
+    });
   };
 
   const validation = () => {
