@@ -40,7 +40,6 @@ export default function ManageEmployees({ navigation, route }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("GET TRIGGED");
       axios({
         method: "GET",
         url: "http://192.168.85.63:5000/",
