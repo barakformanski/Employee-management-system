@@ -1,6 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -12,8 +12,11 @@ import {
 } from "react-native";
 import { Card, ListItem, Button, Icon, Avatar } from "react-native-elements";
 import ManageEmployeesStyles from "./ManageEmployeesStyles";
+import UserContext from "../../UserContext";
 
 export default function ManageEmployees({ navigation, route }) {
+  const URI = useContext(UserContext);
+
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -34,10 +37,8 @@ export default function ManageEmployees({ navigation, route }) {
   const deleteQuery = (idToDelete) => {
     setLoader(true);
     console.log("id to delete:", idToDelete);
-    axios.delete(`http://192.168.85.63:5000/${idToDelete}`).then((res) => {
-      // axios
-      // .delete(`https://employees-managment.herokuapp.com/${idToDelete}`)
-      // .then((res) => {
+    // axios.delete(`http://192.168.85.63:5000/${idToDelete}`).then((res) => {
+    axios.delete(`${URI}${idToDelete}`).then((res) => {
       setLoader(false);
       console.log("resFROMserver DELETE", res.data);
       alert(`employee number ${idToDelete} deleted`);
@@ -51,8 +52,9 @@ export default function ManageEmployees({ navigation, route }) {
       setLoader(true);
       axios({
         method: "GET",
-        url: "http://192.168.85.63:5000/",
+        // url: "http://192.168.85.63:5000/",
         // url: "https://employees-managment.herokuapp.com/",
+        url: `${URI}`,
         headers: {
           "Content-Type": "application/json",
         },

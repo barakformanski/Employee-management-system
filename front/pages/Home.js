@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import axios from "axios";
+import UserContext from "../UserContext";
+
 export default function Home({ navigation, route }) {
+  const URI = useContext(UserContext);
+
   const { email } = route.params;
   const [employee, setEmployee] = useState("you have to sign in first");
   const [test, setTest] = useState(false);
@@ -17,6 +20,7 @@ export default function Home({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      <Text>{URI}</Text>
       {email ? (
         <Text>welcome, {email}!</Text>
       ) : (
