@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useState } from "react";
 
 import {
@@ -28,6 +28,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
+import UserContext from "../../UserContext";
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity
@@ -39,6 +40,8 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 export default function AddEmployees({ navigation }) {
+  const URI = useContext(UserContext);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [loader, setLoader] = useState(false);
   const [flatList, setFlatList] = useState(true);
@@ -47,7 +50,6 @@ export default function AddEmployees({ navigation }) {
     const backgroundColor = item._id === selectedId ? "#6e3b6e" : "#f9c2ff";
     const color = item._id === selectedId ? "white" : "black";
     return (
-      // <Item title={item.first_name} />
       <Item
         item={item}
         onPress={() => {
@@ -79,7 +81,8 @@ export default function AddEmployees({ navigation }) {
       setLoader(true);
       axios({
         method: "GET",
-        url: "http://192.168.85.63:5000/",
+        // url: "http://192.168.85.63:5000/",
+        url: `${URI}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -101,7 +104,8 @@ export default function AddEmployees({ navigation }) {
     setLoader(true);
     axios({
       method: "POST",
-      url: "http://192.168.85.63:5000/add_employee",
+      // url: "http://192.168.85.63:5000/add_employee",
+      url: `${URI}add_employee`,
       data: {
         first_name: firstName,
         last_name: lastName,
@@ -128,7 +132,8 @@ export default function AddEmployees({ navigation }) {
     console.log("EDIT RUN");
     axios({
       method: "PUT",
-      url: "http://192.168.85.63:5000/edit_by_name",
+      // url: "http://192.168.85.63:5000/edit_by_name",
+      url: `${URI}edit_by_name`,
       data: {
         first_name: firstName,
         last_name: lastName,
@@ -194,7 +199,7 @@ export default function AddEmployees({ navigation }) {
                 />
               </View>
 
-              {firstName && flatList ? (
+              {firstName.length === 1 && flatList ? (
                 <SafeAreaView
                   style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}
                 >

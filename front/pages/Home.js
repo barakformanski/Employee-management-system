@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -20,7 +20,6 @@ export default function Home({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Text>{URI}</Text>
       {email ? (
         <Text>welcome, {email}!</Text>
       ) : (

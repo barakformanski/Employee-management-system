@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 
 import { Button, View, Text, TextInput } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import EditEmployeeStyles from "./EditEmployeeStyles";
+import UserContext from "../../UserContext";
+
 import axios from "axios";
 import {
   validatePhone,
@@ -16,11 +17,13 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function EditEmployee({ navigation, route }) {
   // console.log("route.params:", route.params);
+  const URI = useContext(UserContext);
+
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   const { employee } = route.params;
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   const [firstName, onChangeFirstName] = useState("");
   const [lastName, onChangeLastName] = useState("");
@@ -41,7 +44,7 @@ export default function EditEmployee({ navigation, route }) {
         ? employee["avatar"]
         : `https://i.pravatar.cc/${randomIntFromInterval(300, 1000)}`
     );
-    setDataArrived(true);
+    // setDataArrived(true);
     // employee && console.log("firstName", firstName);
 
     // axios({
@@ -57,14 +60,15 @@ export default function EditEmployee({ navigation, route }) {
     //   }
     // });
   }, []);
-  useEffect(() => {
-    setLoader(false);
-  }, [dataArrived]);
+  // useEffect(() => {
+  // setLoader(false);
+  // }, [dataArrived]);
 
   const SetEmployee = () => {
     axios({
       method: "PUT",
-      url: "http://192.168.85.63:5000/set_employee",
+      // url: "http://192.168.85.63:5000/set_employee",
+      url: `${URI}set_employee`,
       data: {
         _id: employee["_id"],
         first_name: firstName,
@@ -93,7 +97,7 @@ export default function EditEmployee({ navigation, route }) {
     ) {
       SetEmployee();
     } else {
-      alert("you have to fill he inputs properly first");
+      alert("you have to fill the inputs properly first");
     }
   };
 

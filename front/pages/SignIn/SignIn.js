@@ -1,11 +1,13 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInstyles from "./SignInStyles";
+import UserContext from "../../UserContext";
+
 import axios from "axios";
 
 import {
@@ -18,6 +20,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 // import { faCheckCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 export default function SignIn({ navigation }) {
+  const URI = useContext(UserContext);
+
   const [loader, setLoader] = useState(false);
   const [email, onChangeEmail] = useState("");
   const [password, onChangePass] = useState("");
@@ -28,7 +32,8 @@ export default function SignIn({ navigation }) {
 
     axios({
       method: "POST",
-      url: "http://192.168.85.63:5000/signIn",
+      // url: "http://192.168.85.63:5000/signIn",
+      url: `${URI}signIn`,
       data: {
         email: email,
         password: password,
@@ -43,6 +48,8 @@ export default function SignIn({ navigation }) {
       {
         !res.data
           ? alert("user not fond")
+          : res.data.user_type === "admin"
+          ? navigation.navigate("ManageEmployees", { user: red.data })
           : navigation.navigate("Home", {
               email: res.data.email,
               password: res.data.password,
@@ -61,7 +68,8 @@ export default function SignIn({ navigation }) {
 
     axios({
       method: "POST",
-      url: "http://192.168.85.63:5000/forget_pass",
+      // url: "http://192.168.85.63:5000/forget_pass",
+      url: `${URI}forget_pass`,
       data: {
         email: email,
       },

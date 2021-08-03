@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import UserContext from "../../UserContext";
+
 import SignUpstyles from "./SignUpStyles";
 import axios from "axios";
 import {
@@ -14,6 +16,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default function SignUp({ navigation }) {
+  const URI = useContext(UserContext);
   const [loader, setLoader] = useState(false);
   const [firstName, onChangeFirstName] = useState("");
   const [lastName, onChangeLastName] = useState("");
@@ -27,12 +30,14 @@ export default function SignUp({ navigation }) {
 
     axios({
       method: "POST",
-      url: "http://192.168.85.63:5000/signUp",
+      // url: "http://192.168.85.63:5000/signUp",
+      url: `${URI}signUp`,
       data: {
-        fisrtName: firstName,
-        lastName: lastName,
+        fisrt_Name: firstName,
+        last_Name: lastName,
         email: email,
         password: password,
+        user_type: retypePassword === password ? "employee" : "admin",
       },
       headers: {
         "Content-Type": "application/json",
@@ -43,12 +48,19 @@ export default function SignUp({ navigation }) {
       {
         !res.data
           ? alert("employee alreadt exist")
-          : navigation.navigate("Home", {
+          : res.data.user_type === "employee"
+          ? navigation.navigate("Home", {
               email: res.data.email,
               password: res.data.password,
-            });
+            })
+          : res.data.user_type === "admin"
+          ? navigation.navigate("manageEmployees", {
+              email: res.data.email,
+              password: res.data.password,
+            })
+          : null;
       }
-      navigation.navigate("Home", { email: res.data.email });
+      // navigation.navigate("Home", { email: res.data.email });
     });
   };
 
@@ -61,8 +73,16 @@ export default function SignUp({ navigation }) {
       password === retypePassword
     ) {
       SignUpEmployee();
+    } else if (
+      validateName(firstName) &&
+      validateName(lastName) &&
+      validateEmail(email) &&
+      validatePassword(password) &&
+      `${password}admin` === "retypePassword"
+    ) {
+      SignUpEmployee();
     } else {
-      alert("you have to fill he inputs properly first");
+      alert("you have to fill the inputs properly first");
     }
   };
 
@@ -82,7 +102,7 @@ export default function SignUp({ navigation }) {
               style={SignUpstyles.input}
               onChangeText={onChangeFirstName}
               value={firstName}
-              placeholder={"firstName"}
+              placeholder={"first Name"}
             />
             <Ionicons
               name="md-checkmark-circle"
@@ -99,7 +119,7 @@ export default function SignUp({ navigation }) {
               style={SignUpstyles.input}
               onChangeText={onChangeLastName}
               value={lastName}
-              placeholder={"lastName"}
+              placeholder={"last Name"}
             />
             <Ionicons
               name="md-checkmark-circle"
@@ -150,13 +170,14 @@ export default function SignUp({ navigation }) {
               style={SignUpstyles.input}
               onChangeText={onChangeRetypePassword}
               value={retypePassword}
-              placeholder={"retypePassword"}
+              placeholder={"retype Password"}
             />
             <Ionicons
               name="md-checkmark-circle"
               size={32}
               color={
-                retypePassword && password === retypePassword
+                (retypePassword && password === retypePassword) ||
+                `${password}admin` === retypePassword
                   ? "green"
                   : "transparent"
               }
