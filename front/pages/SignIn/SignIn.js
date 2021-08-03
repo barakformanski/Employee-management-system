@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button, View, Text, TextInput } from "react-native";
+import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -18,10 +18,12 @@ import { Ionicons } from "@expo/vector-icons";
 
 // import { faCheckCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 export default function SignIn({ navigation }) {
+  const [loader, setLoader] = useState(false);
   const [email, onChangeEmail] = useState("");
   const [password, onChangePass] = useState("");
 
   const SignInEmployee = () => {
+    setLoader(true);
     console.log("check post req");
 
     axios({
@@ -35,13 +37,15 @@ export default function SignIn({ navigation }) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      setLoader(false);
+
       console.log("res.data", res.data);
       {
         !res.data
           ? alert("user not fond")
           : navigation.navigate("Home", {
-              email: res.email,
-              password: res.password,
+              email: res.data.email,
+              password: res.data.password,
             });
       }
     });
@@ -79,51 +83,58 @@ export default function SignIn({ navigation }) {
 
   return (
     <View style={SignInstyles.container}>
-      {email ? <Text style={SignInstyles.label}>Email</Text> : null}
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput
-          style={SignInstyles.input}
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder={"email"}
-        />
-        <Ionicons
-          name="md-checkmark-circle"
-          size={32}
-          color={validateEmail(email) === false ? "transparent" : "green"}
-        />
-      </View>
+      {loader ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <>
+          {email ? <Text style={SignInstyles.label}>Email</Text> : null}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TextInput
+              style={SignInstyles.input}
+              onChangeText={onChangeEmail}
+              value={email}
+              placeholder={"email"}
+            />
+            <Ionicons
+              name="md-checkmark-circle"
+              size={32}
+              color={validateEmail(email) === false ? "transparent" : "green"}
+            />
+          </View>
 
-      {password ? <Text style={SignInstyles.label}>Password</Text> : null}
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput
-          style={SignInstyles.input}
-          onChangeText={onChangePass}
-          value={password}
-          placeholder={"password"}
-        />
-        <Ionicons
-          name="md-checkmark-circle"
-          size={32}
-          color={validatePassword(password) === false ? "transparent" : "green"}
-        />
-      </View>
-      <View style={SignInstyles.SignInView}>
-        <Text style={SignInstyles.BlueText}>Forget password?</Text>
-        <Button
-          title="Sign In"
-          onPress={() => email && password && SignInEmployee()}
-        />
-      </View>
-      <View style={SignInstyles.SignUpView}>
-        <Text style={SignInstyles.RegularText}>Don't have an account?</Text>
-        <Text
-          style={SignInstyles.BlueText}
-          onPress={() => navigation.navigate("SignUp")}
-        >
-          Sign Up
-        </Text>
-      </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TextInput
+              style={SignInstyles.input}
+              onChangeText={onChangePass}
+              value={password}
+              placeholder={"password"}
+            />
+            <Ionicons
+              name="md-checkmark-circle"
+              size={32}
+              color={
+                validatePassword(password) === false ? "transparent" : "green"
+              }
+            />
+          </View>
+          <View style={SignInstyles.SignInView}>
+            <Text style={SignInstyles.BlueText}>Forget password?</Text>
+            <Button
+              title="Sign In"
+              onPress={() => email && password && SignInEmployee()}
+            />
+          </View>
+          <View style={SignInstyles.SignUpView}>
+            <Text style={SignInstyles.RegularText}>Don't have an account?</Text>
+            <Text
+              style={SignInstyles.BlueText}
+              onPress={() => navigation.navigate("SignUp")}
+            >
+              Sign Up
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 }

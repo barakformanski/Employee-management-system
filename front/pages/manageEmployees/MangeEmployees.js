@@ -32,16 +32,19 @@ export default function ManageEmployees({ navigation, route }) {
   const [avatarNum, setAvatarNum] = useState(randomIntFromInterval(300, 1000));
   const [modalVisible, setModalVisible] = useState(false);
   const deleteQuery = (idToDelete) => {
+    setLoader(true);
     console.log("id to delete:", idToDelete);
     axios.delete(`http://192.168.85.63:5000/${idToDelete}`).then((res) => {
+      setLoader(false);
       console.log("resFROMserver DELETE", res.data);
-      alert("employee number", idToDelete, "deleted");
+      alert(`employee number ${idToDelete} deleted`);
       setEmployees(res.data);
     });
   };
 
   useFocusEffect(
     React.useCallback(() => {
+      setLoader(true);
       axios({
         method: "GET",
         url: "http://192.168.85.63:5000/",

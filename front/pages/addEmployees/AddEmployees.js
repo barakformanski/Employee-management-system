@@ -13,6 +13,7 @@ import {
   Pressable,
   Modal,
   alert,
+  ActivityIndicator,
 } from "react-native";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -39,7 +40,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 export default function AddEmployees({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [loader, setLoader] = useState(false);
   const [flatList, setFlatList] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const renderItem = ({ item }) => {
@@ -75,6 +76,7 @@ export default function AddEmployees({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
+      setLoader(true);
       axios({
         method: "GET",
         url: "http://192.168.85.63:5000/",
@@ -82,6 +84,7 @@ export default function AddEmployees({ navigation }) {
           "Content-Type": "application/json",
         },
       }).then((res) => {
+        setLoader(false);
         console.log("res.data", res.data);
         {
           !res.data ? alert("DB is empty") : setEmployees(res.data);
@@ -95,6 +98,7 @@ export default function AddEmployees({ navigation }) {
   }, [firstName]);
 
   const AddEmployee = () => {
+    setLoader(true);
     axios({
       method: "POST",
       url: "http://192.168.85.63:5000/add_employee",
@@ -109,6 +113,7 @@ export default function AddEmployees({ navigation }) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      setLoader(false);
       console.log("res.data", res.data);
       {
         !res.data
@@ -119,6 +124,7 @@ export default function AddEmployees({ navigation }) {
     });
   };
   const EditEmployeeByName = () => {
+    setLOader(true);
     console.log("EDIT RUN");
     axios({
       method: "PUT",
@@ -134,6 +140,7 @@ export default function AddEmployees({ navigation }) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      setLoader(false);
       console.log("res.data", res.data);
       navigation.navigate("ManageEmployees", { phone: res.data.phone });
     });
@@ -155,160 +162,172 @@ export default function AddEmployees({ navigation }) {
 
   return (
     <View style={AddEmployeesStyles.container}>
-      <Text style={AddEmployeesStyles.header}>Personal Details</Text>
-      <ScrollView>
-        {firstName ? (
-          <Text style={AddEmployeesStyles.label}>First Name</Text>
-        ) : null}
-        <View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            onPress={() => setFlatList(true)}
-          >
-            <TextInput
-              style={AddEmployeesStyles.input}
-              onChangeText={onChangeFirstName}
-              value={firstName}
-              placeholder={"firstName"}
-            />
-            <Ionicons
-              name="md-checkmark-circle"
-              size={32}
-              color={
-                validateName(firstName) === false ? "transparent" : "green"
-              }
-            />
-          </View>
+      {loader ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <Text style={AddEmployeesStyles.header}>Personal Details</Text>
+          <ScrollView>
+            {firstName ? (
+              <Text style={AddEmployeesStyles.label}>First Name</Text>
+            ) : null}
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+                onPress={() => setFlatList(true)}
+              >
+                <TextInput
+                  style={AddEmployeesStyles.input}
+                  onChangeText={onChangeFirstName}
+                  value={firstName}
+                  placeholder={"firstName"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    validateName(firstName) === false ? "transparent" : "green"
+                  }
+                />
+              </View>
 
-          {firstName && flatList ? (
-            <SafeAreaView
-              style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}
-            >
-              <FlatList
-                data={employees}
-                renderItem={renderItem}
-                keyExtractor={(employee) => employee._id}
-                extraData={selectedId}
+              {firstName && flatList ? (
+                <SafeAreaView
+                  style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}
+                >
+                  <FlatList
+                    data={employees}
+                    renderItem={renderItem}
+                    keyExtractor={(employee) => employee._id}
+                    extraData={selectedId}
 
-                // numColumns={3}
+                    // numColumns={3}
+                  />
+                </SafeAreaView>
+              ) : null}
+            </View>
+            {lastName ? (
+              <Text style={AddEmployeesStyles.label}>Last Name</Text>
+            ) : null}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={AddEmployeesStyles.input}
+                onChangeText={onChangeLastName}
+                value={lastName}
+                placeholder={"lastName"}
               />
-            </SafeAreaView>
-          ) : null}
-        </View>
-        {lastName ? (
-          <Text style={AddEmployeesStyles.label}>Last Name</Text>
-        ) : null}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TextInput
-            style={AddEmployeesStyles.input}
-            onChangeText={onChangeLastName}
-            value={lastName}
-            placeholder={"lastName"}
-          />
-          <Ionicons
-            name="md-checkmark-circle"
-            size={32}
-            color={validateName(lastName) === false ? "transparent" : "green"}
-          />
-        </View>
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={
+                  validateName(lastName) === false ? "transparent" : "green"
+                }
+              />
+            </View>
 
-        {phone ? <Text style={AddEmployeesStyles.label}>Phone</Text> : null}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TextInput
-            style={AddEmployeesStyles.input}
-            onChangeText={onChangePhone}
-            value={phone}
-            placeholder={"Phone"}
-          />
-          <Ionicons
-            name="md-checkmark-circle"
-            size={32}
-            color={validatePhone(phone) === false ? "transparent" : "green"}
-          />
-        </View>
+            {phone ? <Text style={AddEmployeesStyles.label}>Phone</Text> : null}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={AddEmployeesStyles.input}
+                onChangeText={onChangePhone}
+                value={phone}
+                placeholder={"Phone"}
+              />
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={phone && validatePhone(phone) ? "green" : "transparent"}
+              />
+            </View>
 
-        {address ? <Text style={AddEmployeesStyles.label}>Address</Text> : null}
+            {address ? (
+              <Text style={AddEmployeesStyles.label}>Address</Text>
+            ) : null}
 
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TextInput
-            style={AddEmployeesStyles.input}
-            onChangeText={onChangeAddress}
-            value={address}
-            placeholder={"Address"}
-          />
-          <Ionicons
-            name="md-checkmark-circle"
-            size={32}
-            color={validateAddress(address) === false ? "transparent" : "green"}
-          />
-        </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={AddEmployeesStyles.input}
+                onChangeText={onChangeAddress}
+                value={address}
+                placeholder={"Address"}
+              />
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={
+                  validateAddress(address) === false ? "transparent" : "green"
+                }
+              />
+            </View>
 
-        {roll ? <Text style={AddEmployeesStyles.label}>Roll</Text> : null}
+            {roll ? <Text style={AddEmployeesStyles.label}>Roll</Text> : null}
 
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TextInput
-            style={AddEmployeesStyles.input}
-            onChangeText={onChangeRoll}
-            value={roll}
-            placeholder={"Roll"}
-          />
-          <Ionicons
-            name="md-checkmark-circle"
-            size={32}
-            color={validateName(roll) === false ? "transparent" : "green"}
-          />
-        </View>
-      </ScrollView>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={AddEmployeesStyles.input}
+                onChangeText={onChangeRoll}
+                value={roll}
+                placeholder={"Roll"}
+              />
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={validateName(roll) === false ? "transparent" : "green"}
+              />
+            </View>
+          </ScrollView>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={AddEmployeesStyles.centeredView}>
-          <View style={AddEmployeesStyles.modalView}>
-            <Text style={AddEmployeesStyles.modalText}>
-              העובד קיים במערכת, בחר מה ברצונך לעשות
-            </Text>
-            <Pressable
-              style={[
-                AddEmployeesStyles.button,
-                AddEmployeesStyles.buttonClose,
-              ]}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={AddEmployeesStyles.textStyle}>
-                סגור ומלא את הפרטים מחדש
-              </Text>
-            </Pressable>
-            <Pressable
-              style={[
-                AddEmployeesStyles.button,
-                AddEmployeesStyles.buttonClose,
-              ]}
-              onPress={() => {
-                EditEmployeeByName();
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={AddEmployeesStyles.textStyle}>
-                עדכן את פרטי העובד הנבחר לפרטים שמילאתי
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={AddEmployeesStyles.centeredView}>
+              <View style={AddEmployeesStyles.modalView}>
+                <Text style={AddEmployeesStyles.modalText}>
+                  העובד קיים במערכת, בחר מה ברצונך לעשות
+                </Text>
+                <Pressable
+                  style={[
+                    AddEmployeesStyles.button,
+                    AddEmployeesStyles.buttonClose,
+                  ]}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text style={AddEmployeesStyles.textStyle}>
+                    סגור ומלא את הפרטים מחדש
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    AddEmployeesStyles.button,
+                    AddEmployeesStyles.buttonClose,
+                  ]}
+                  onPress={() => {
+                    EditEmployeeByName();
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text style={AddEmployeesStyles.textStyle}>
+                    עדכן את פרטי העובד הנבחר לפרטים שמילאתי
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
 
-      <Button title="Add" onPress={() => validation()} />
+          <Button title="Add" onPress={() => validation()} />
+        </>
+      )}
     </View>
   );
 }
