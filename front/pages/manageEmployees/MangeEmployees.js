@@ -8,6 +8,7 @@ import {
   Modal,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { Card, ListItem, Button, Icon, Avatar } from "react-native-elements";
 import ManageEmployeesStyles from "./ManageEmployeesStyles";
@@ -26,6 +27,7 @@ export default function ManageEmployees({ navigation, route }) {
       return "??";
     }
   }
+  const [loader, setLoader] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [avatarNum, setAvatarNum] = useState(randomIntFromInterval(300, 1000));
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,6 +49,7 @@ export default function ManageEmployees({ navigation, route }) {
           "Content-Type": "application/json",
         },
       }).then((res) => {
+        setLoader(false);
         console.log("res.data", res.data);
         {
           !res.data ? alert("DB is empty") : setEmployees(res.data);
@@ -57,47 +60,51 @@ export default function ManageEmployees({ navigation, route }) {
 
   return (
     <View style={ManageEmployeesStyles.container}>
-      <Button
-        title="Add Employees"
-        onPress={() => navigation.navigate("AddEmployees")}
-      />
-      <ScrollView>
-        {employees &&
-          employees.map((employee, index) => {
-            return (
-              <Card key={index}>
-                {employee.avatar ? (
-                  <Avatar
-                    containerStyle={{ backgroundColor: "#d3d3d3" }}
-                    onPress={
-                      () =>
-                        navigation.navigate("EditEmployee", {
-                          employee: employee,
-                        })
+      {loader ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <>
+          <Button
+            title="Add Employees"
+            onPress={() => navigation.navigate("AddEmployees")}
+          />
+          <ScrollView>
+            {employees &&
+              employees.map((employee, index) => {
+                return (
+                  <Card key={index}>
+                    {employee.avatar ? (
+                      <Avatar
+                        containerStyle={{ backgroundColor: "#d3d3d3" }}
+                        onPress={
+                          () =>
+                            navigation.navigate("EditEmployee", {
+                              employee: employee,
+                            })
 
-                      // setModalVisible(true)
-                    }
-                    rounded
-                    source={{ uri: employee.avatar }}
-                    title="MD"
-                  />
-                ) : (
-                  <Avatar
-                    containerStyle={{ backgroundColor: "#d3d3d3" }}
-                    onPress={() =>
-                      navigation.navigate("EditEmployee", {
-                        employee: employee,
-                      })
-                    }
-                    rounded
-                    title={avatarLetters(
-                      employee.first_name,
-                      employee.last_name
+                          // setModalVisible(true)
+                        }
+                        rounded
+                        source={{ uri: employee.avatar }}
+                        title="MD"
+                      />
+                    ) : (
+                      <Avatar
+                        containerStyle={{ backgroundColor: "#d3d3d3" }}
+                        onPress={() =>
+                          navigation.navigate("EditEmployee", {
+                            employee: employee,
+                          })
+                        }
+                        rounded
+                        title={avatarLetters(
+                          employee.first_name,
+                          employee.last_name
+                        )}
+                      />
                     )}
-                  />
-                )}
 
-                {/* <Modal
+                    {/* <Modal
                   animationType="slide"
                   transparent={true}
                   visible={modalVisible}
@@ -132,40 +139,44 @@ export default function ManageEmployees({ navigation, route }) {
                   </View>
                 </Modal> */}
 
-                <Card.Title>{`name:${employee.first_name} ${employee.last_name} `}</Card.Title>
-                <Card.Title>{`roll:${employee.roll} `}</Card.Title>
-                <Card.Title>{`phone:${employee.phone}`}</Card.Title>
-                <Card.Title>{`address:${employee.address}`}</Card.Title>
+                    <Card.Title>{`name:${employee.first_name} ${employee.last_name} `}</Card.Title>
+                    <Card.Title>{`roll:${employee.roll} `}</Card.Title>
+                    <Card.Title>{`phone:${employee.phone}`}</Card.Title>
+                    <Card.Title>{`address:${employee.address}`}</Card.Title>
 
-                <Button
-                  icon={<Icon name="code" color="#ffffff" />}
-                  buttonStyle={{
-                    borderRadius: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 0,
-                  }}
-                  title="EDIT"
-                  onPress={() =>
-                    navigation.navigate("EditEmployee", { employee: employee })
-                  }
-                />
-                <Button
-                  icon={<Icon name="code" color="#ffffff" />}
-                  buttonStyle={{
-                    borderRadius: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 0,
-                  }}
-                  title="DELETE"
-                  onPress={() => deleteQuery(employee._id)}
-                />
-                {/* </Card.Image> */}
-              </Card>
-            );
-          })}
-      </ScrollView>
+                    <Button
+                      icon={<Icon name="code" color="#ffffff" />}
+                      buttonStyle={{
+                        borderRadius: 0,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 0,
+                      }}
+                      title="EDIT"
+                      onPress={() =>
+                        navigation.navigate("EditEmployee", {
+                          employee: employee,
+                        })
+                      }
+                    />
+                    <Button
+                      icon={<Icon name="code" color="#ffffff" />}
+                      buttonStyle={{
+                        borderRadius: 0,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 0,
+                      }}
+                      title="DELETE"
+                      onPress={() => deleteQuery(employee._id)}
+                    />
+                    {/* </Card.Image> */}
+                  </Card>
+                );
+              })}
+          </ScrollView>
+        </>
+      )}
     </View>
   );
 }
