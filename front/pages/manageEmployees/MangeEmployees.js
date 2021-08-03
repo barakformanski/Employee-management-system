@@ -108,8 +108,8 @@ export default function ManageEmployees({ navigation, route }) {
                         }
                         rounded
                         title={avatarLetters(
-                          employee.first_name,
-                          employee.last_name
+                          employee.first_name || "?",
+                          employee.last_name || "?"
                         )}
                       />
                     )}

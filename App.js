@@ -71,7 +71,7 @@ app.delete(`/:id`, async (req, res) => {
   }
 });
 
-// GET EMPLOYEE FROM SIGN IN
+//SIGN IN  GET EMPLOYEE
 app.post(`/signIn`, async (req, res) => {
   console.log("check post req", req.body);
   const employee = await Employee.findOne({

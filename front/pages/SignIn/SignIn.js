@@ -49,7 +49,7 @@ export default function SignIn({ navigation }) {
         !res.data
           ? alert("user not fond")
           : res.data.user_type === "admin"
-          ? navigation.navigate("ManageEmployees", { user: red.data })
+          ? navigation.navigate("ManageEmployees", { user: res.data })
           : navigation.navigate("Home", {
               email: res.data.email,
               password: res.data.password,

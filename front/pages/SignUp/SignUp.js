@@ -33,8 +33,8 @@ export default function SignUp({ navigation }) {
       // url: "http://192.168.85.63:5000/signUp",
       url: `${URI}signUp`,
       data: {
-        fisrt_Name: firstName,
-        last_Name: lastName,
+        fisrt_name: firstName,
+        last_name: lastName,
         email: email,
         password: password,
         user_type: retypePassword === password ? "employee" : "admin",
@@ -54,7 +54,7 @@ export default function SignUp({ navigation }) {
               password: res.data.password,
             })
           : res.data.user_type === "admin"
-          ? navigation.navigate("manageEmployees", {
+          ? navigation.navigate("ManageEmployees", {
               email: res.data.email,
               password: res.data.password,
             })
@@ -78,7 +78,7 @@ export default function SignUp({ navigation }) {
       validateName(lastName) &&
       validateEmail(email) &&
       validatePassword(password) &&
-      `${password}admin` === "retypePassword"
+      `${password}admin` === retypePassword
     ) {
       SignUpEmployee();
     } else {
