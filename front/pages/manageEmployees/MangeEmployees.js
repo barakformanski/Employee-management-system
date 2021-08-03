@@ -35,6 +35,9 @@ export default function ManageEmployees({ navigation, route }) {
     setLoader(true);
     console.log("id to delete:", idToDelete);
     axios.delete(`http://192.168.85.63:5000/${idToDelete}`).then((res) => {
+      // axios
+      // .delete(`https://employees-managment.herokuapp.com/${idToDelete}`)
+      // .then((res) => {
       setLoader(false);
       console.log("resFROMserver DELETE", res.data);
       alert(`employee number ${idToDelete} deleted`);
@@ -44,10 +47,12 @@ export default function ManageEmployees({ navigation, route }) {
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log("starting");
       setLoader(true);
       axios({
         method: "GET",
         url: "http://192.168.85.63:5000/",
+        // url: "https://employees-managment.herokuapp.com/",
         headers: {
           "Content-Type": "application/json",
         },

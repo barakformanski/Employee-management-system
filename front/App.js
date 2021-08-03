@@ -20,7 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="SignIn"
         // screenOptions={{ title: " anable if we want same title to all screens" }}
       >
         <Stack.Screen
@@ -32,7 +32,18 @@ export default function App() {
         <Stack.Screen
           name="SignIn"
           component={SignIn}
-          options={{ title: "Welcome!! please Sign in" }}
+          options={{
+            title: "Sign in",
+            headerStyle: {
+              backgroundColor: "#f6f7f8",
+              height: "60%",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "black",
+            },
+          }}
         />
         <Stack.Screen
           name="SignUp"
