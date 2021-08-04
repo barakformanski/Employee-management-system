@@ -3,6 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import EStyleSheet from "react-native-extended-stylesheet";
+import { Dimensions } from "react-native";
 
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn/SignIn";
@@ -13,6 +14,11 @@ import EditEmployee from "./pages/editEmployee/EditEmployee";
 import { UserProvider } from "./UserContext";
 
 const Stack = createStackNavigator();
+
+const entireScreenWidth = Dimensions.get("window").width;
+EStyleSheet.build({
+  $rem: entireScreenWidth / 380,
+});
 
 EStyleSheet.build();
 
@@ -39,7 +45,7 @@ export default function App() {
               title: "Sign in",
               headerStyle: {
                 backgroundColor: "#f6f7f8",
-                height: "60%",
+                height: EStyleSheet.value("$rem") * 300,
               },
               headerTintColor: "#fff",
               headerTitleStyle: {

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 
 import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
