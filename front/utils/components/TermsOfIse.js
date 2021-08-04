@@ -7,6 +7,7 @@ export default function TermsOfUse() {
       style={{
         color: "black",
         textDecorationLine: "underline",
+        textAlign: "center",
       }}
     >
       Our Terms of Use and Privacy Policy

@@ -2,33 +2,46 @@ import { StyleSheet } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 const SignUpstyles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  scrollViewContainer: {
+    // flex: 1,
+    backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
+
     paddingBottom: () => EStyleSheet.value("$rem") * 20,
-    paddingTop: () => EStyleSheet.value("$rem") * 80,
+    paddingTop: () => EStyleSheet.value("$rem") * 30,
 
     alignItems: "center",
   },
+  seccondContainer: {
+    flex: 1,
+    marginTop: () => EStyleSheet.value("$rem") * 70,
+    paddingHorizontal: () => EStyleSheet.value("$rem") * 20,
+
+    // backgroundColor: "green",
+  },
   inputsContainer: {
+    // flex: 2,
     // height: "40%",
     justifyContent: "space-between",
     width: "75%",
+    marginBottom: () => EStyleSheet.value("$rem") * 30,
     // backgroundColor: "red",
   },
-
   header: {
     fontWeight: "bold",
+    height: () => EStyleSheet.value("$rem") * 30,
     // alignSelf: "flex-end",
     // marginRight: "25%",
   },
+  inputContainer: {
+    height: () => EStyleSheet.value("$rem") * 70,
+    justifyContent: "flex-start",
+  },
+
   input: {
     width: "100%",
-    marginVertical: () => EStyleSheet.value("$rem") * 12,
+    // marginBottom: () => EStyleSheet.value("$rem") * 12,
     borderBottomWidth: 1,
-
-    height: () => EStyleSheet.value("$rem") * 20,
   },
   label: {
     alignSelf: "flex-end",
@@ -43,6 +56,9 @@ const SignUpstyles = EStyleSheet.create({
   },
   SignUpView: {
     flexDirection: "row-reverse",
+    marginTop: () => EStyleSheet.value("$rem") * 40,
+    marginBottom: () => EStyleSheet.value("$rem") * 80,
+    justifyContent: "center",
   },
   RegularText: {
     color: "black",
@@ -56,7 +72,7 @@ const SignUpstyles = EStyleSheet.create({
     alignSelf: "flex-end",
     padding: 10,
     borderRadius: 10,
-    width: () => EStyleSheet.value("$rem") * 100,
+    width: () => EStyleSheet.value("$rem") * 80,
   },
 });
 export default SignUpstyles;

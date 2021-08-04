@@ -32,6 +32,9 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="Home"
           // screenOptions={{ title: " anable if we want same title to all screens" }}
+          screenOptions={{
+            headerShown: false,
+          }}
         >
           <Stack.Screen
             name="Home"
@@ -47,8 +50,8 @@ export default function App() {
               headerStyle: {
                 backgroundColor: "#f6f7f8",
                 height: EStyleSheet.value("$rem") * 250,
-                elevation: 0, // remove shadow on Android
-                shadowOpacity: 0, // remove shadow on iOS
+                elevation: 0,
+                shadowOpacity: 0,
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
@@ -84,41 +87,41 @@ export default function App() {
             name="SignUp"
             component={SignUp}
             options={{
-              title: "Sign In",
-              headerStyle: {
-                backgroundColor: "#f6f7f8",
-                height: EStyleSheet.value("$rem") * 250,
-                elevation: 0, // remove shadow on Android
-                shadowOpacity: 0, // remove shadow on iOS
-              },
-              headerTintColor: "#fff",
-              headerTitleStyle: {
-                fontWeight: "bold",
-                color: "black",
-              },
+              title: "Sign Up",
+              //   headerStyle: {
+              //     backgroundColor: "#f6f7f8",
+              // height: EStyleSheet.value("$rem") * 250,
+              // elevation: 0,
+              // shadowOpacity: 0,
+              // },
+              // headerTintColor: "#fff",
+              // headerTitleStyle: {
+              // fontWeight: "bold",
+              // color: "transparent",
+              // },
 
-              headerTitle: () => (
-                <View>
-                  <Text
-                    style={{
-                      textAlign: "right",
-                      fontWeight: "bold",
-                      fontSize: 30,
-                      top: EStyleSheet.value("$rem") * 120,
-                      marginRight: EStyleSheet.value("$rem") * 12,
-                    }}
-                  >
-                    Sign Up
-                  </Text>
-                  <Image
-                    style={{
-                      width: EStyleSheet.value("$rem") * 200,
-                      top: EStyleSheet.value("$rem") * 160,
-                    }}
-                    source={require("./assets/kid.png")}
-                  />
-                </View>
-              ),
+              //   headerTitle: () => (
+              //     <View>
+              //       <Text
+              //         style={{
+              //           textAlign: "right",
+              //           fontWeight: "bold",
+              //           fontSize: 30,
+              //           top: EStyleSheet.value("$rem") * 120,
+              //           marginRight: EStyleSheet.value("$rem") * 12,
+              //         }}
+              //       >
+              //         Sign Up
+              //       </Text>
+              //       <Image
+              //         style={{
+              //           width: EStyleSheet.value("$rem") * 200,
+              //           top: EStyleSheet.value("$rem") * 160,
+              //         }}
+              //         source={require("./assets/kid.png")}
+              //       />
+              //     </View>
+              //   ),
             }}
           />
           <Stack.Screen

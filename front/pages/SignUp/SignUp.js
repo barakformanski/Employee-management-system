@@ -8,10 +8,14 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Image,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import UserContext from "../../UserContext";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import SignUpstyles from "./SignUpStyles";
 
@@ -23,7 +27,8 @@ import {
 } from "../../utils/components/validation";
 import { Ionicons } from "@expo/vector-icons";
 import TermsOfUse from "../../utils/components/TermsOfIse";
-
+import { flex } from "styled-system";
+import Header from "../../utils/components/Header";
 export default function SignUp({ navigation }) {
   const URI = useContext(UserContext);
   const [loader, setLoader] = useState(false);
@@ -94,13 +99,13 @@ export default function SignUp({ navigation }) {
       alert("you have to fill the inputs properly first");
     }
   };
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
-    <View style={SignUpstyles.container}>
-      {loader ? (
-        <ActivityIndicator />
-      ) : (
-        <>
+    <ScrollView contentContainerStyle={SignUpstyles.scrollViewContainer}>
+      <Header title="Sign Up" />
+      {!loader ? (
+        <View style={SignUpstyles.seccondContainer}>
           <View style={SignUpstyles.inputsContainer}>
             <Text style={SignUpstyles.header}>Personal Details</Text>
             <View style={SignUpstyles.inputContainer}>
@@ -234,8 +239,10 @@ export default function SignUp({ navigation }) {
             </Text>
           </View>
           <TermsOfUse />
-        </>
+        </View>
+      ) : (
+        <ActivityIndicator />
       )}
-    </View>
+    </ScrollView>
   );
 }
