@@ -3,8 +3,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import EStyleSheet from "react-native-extended-stylesheet";
-import { Dimensions } from "react-native";
 
+import { Image, Text, View, Dimensions } from "react-native";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
@@ -18,9 +18,10 @@ const Stack = createStackNavigator();
 const entireScreenWidth = Dimensions.get("window").width;
 EStyleSheet.build({
   $rem: entireScreenWidth / 380,
+  $textColor: "#0275d8",
 });
 
-EStyleSheet.build();
+// EStyleSheet.build();
 
 export default function App() {
   const URI = "https://employees-managment.herokuapp.com/";
@@ -42,16 +43,41 @@ export default function App() {
             name="SignIn"
             component={SignIn}
             options={{
-              title: "Sign in",
+              title: "Sign In",
               headerStyle: {
                 backgroundColor: "#f6f7f8",
-                height: EStyleSheet.value("$rem") * 300,
+                height: EStyleSheet.value("$rem") * 250,
+                elevation: 0, // remove shadow on Android
+                shadowOpacity: 0, // remove shadow on iOS
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: "bold",
                 color: "black",
               },
+
+              headerTitle: () => (
+                <View>
+                  <Text
+                    style={{
+                      textAlign: "right",
+                      fontWeight: "bold",
+                      fontSize: 30,
+                      top: EStyleSheet.value("$rem") * 120,
+                      marginRight: EStyleSheet.value("$rem") * 12,
+                    }}
+                  >
+                    Sign In
+                  </Text>
+                  <Image
+                    style={{
+                      width: EStyleSheet.value("$rem") * 200,
+                      top: EStyleSheet.value("$rem") * 160,
+                    }}
+                    source={require("./assets/kid.png")}
+                  />
+                </View>
+              ),
             }}
           />
           <Stack.Screen

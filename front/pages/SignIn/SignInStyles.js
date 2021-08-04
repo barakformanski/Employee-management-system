@@ -5,26 +5,37 @@ const SignInstyles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: () => EStyleSheet.value("$rem") * 10,
   },
-
+  scrollView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop: () => EStyleSheet.value("$rem") * 100,
+  },
+  inputContainer: {
+    width: "80%",
+  },
   input: {
-    height: "2rem",
-    width: "60%",
-    margin: 12,
+    // width: () => EStyleSheet.value("$rem") * 100,
+    width: "100%",
+    marginVertical: () => EStyleSheet.value("$rem") * 12,
     borderBottomWidth: 1,
+
+    height: () => EStyleSheet.value("$rem") * 20,
   },
   label: {
     alignSelf: "flex-end",
-    marginRight: "25%",
+    // marginRight: "24%",
     color: "#577BF9",
   },
   SignInView: {
-    width: "80%",
+    // width: "80%",
     flexDirection: "row-reverse",
     justifyContent: "space-between",
-    // flexWrap: "wrap",
+    flexWrap: "wrap",
   },
   SignUpView: {
     flexDirection: "row-reverse",

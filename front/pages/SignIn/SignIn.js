@@ -1,21 +1,32 @@
 import React from "react";
 import { useState, useContext } from "react";
 
-import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
-import EStyleSheet from "react-native-extended-stylesheet";
+import {
+  Button,
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  Image,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInstyles from "./SignInStyles";
 import UserContext from "../../UserContext";
-
+import TermsOfUse from "../../utils/components/TermsOfIse";
 import axios from "axios";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import {
   validateEmail,
   validatePassword,
 } from "../../utils/components/validation";
 import { Ionicons } from "@expo/vector-icons";
+import { paddingBottom } from "styled-system";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -91,40 +102,44 @@ export default function SignIn({ navigation }) {
   };
 
   return (
-    <View style={SignInstyles.container}>
+    <SafeAreaView style={SignInstyles.container}>
       {loader ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
-        <>
-          {email ? <Text style={SignInstyles.label}>Email</Text> : null}
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TextInput
-              style={SignInstyles.input}
-              onChangeText={onChangeEmail}
-              value={email}
-              placeholder={"email"}
-            />
-            <Ionicons
-              name="md-checkmark-circle"
-              size={32}
-              color={validateEmail(email) === false ? "transparent" : "green"}
-            />
+        <ScrollView contentContainerStyle={SignInstyles.scrollView}>
+          <View style={SignInstyles.inputContainer}>
+            {email ? <Text style={SignInstyles.label}>Email</Text> : null}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={SignInstyles.input}
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder={"email"}
+              />
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={validateEmail(email) === false ? "transparent" : "green"}
+              />
+            </View>
           </View>
-
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TextInput
-              style={SignInstyles.input}
-              onChangeText={onChangePass}
-              value={password}
-              placeholder={"password"}
-            />
-            <Ionicons
-              name="md-checkmark-circle"
-              size={32}
-              color={
-                validatePassword(password) === false ? "transparent" : "green"
-              }
-            />
+          <View style={SignInstyles.inputContainer}>
+            {password ? <Text style={SignInstyles.label}>Password</Text> : null}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                style={SignInstyles.input}
+                onChangeText={onChangePass}
+                value={password}
+                placeholder={"password"}
+              />
+              <Ionicons
+                name="md-checkmark-circle"
+                size={32}
+                color={
+                  validatePassword(password) === false ? "transparent" : "green"
+                }
+              />
+            </View>
           </View>
           <View style={SignInstyles.SignInView}>
             <Text style={SignInstyles.BlueText}>Forget password?</Text>
@@ -142,8 +157,11 @@ export default function SignIn({ navigation }) {
               Sign Up
             </Text>
           </View>
-        </>
+          <View>
+            <TermsOfUse />
+          </View>
+        </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
