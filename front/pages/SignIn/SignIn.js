@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 
 import {
-  Button,
+  TouchableOpacity,
   View,
   Text,
   TextInput,
@@ -107,49 +107,70 @@ export default function SignIn({ navigation }) {
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
         <ScrollView contentContainerStyle={SignInstyles.scrollView}>
-          <View style={SignInstyles.inputContainer}>
-            {email ? <Text style={SignInstyles.label}>Email</Text> : null}
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={SignInstyles.input}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder={"email"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={validateEmail(email) === false ? "transparent" : "green"}
-              />
+          <View style={SignInstyles.inputsContainer}>
+            <View style={SignInstyles.inputContainer}>
+              {email ? <Text style={SignInstyles.label}>Email</Text> : null}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={SignInstyles.input}
+                  onChangeText={onChangeEmail}
+                  value={email}
+                  placeholder={"email"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    validateEmail(email) === false ? "transparent" : "green"
+                  }
+                />
+              </View>
+            </View>
+            <View style={SignInstyles.inputContainer}>
+              {password ? (
+                <Text style={SignInstyles.label}>Password</Text>
+              ) : null}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={SignInstyles.input}
+                  onChangeText={onChangePass}
+                  value={password}
+                  placeholder={"password"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    validatePassword(password) === false
+                      ? "transparent"
+                      : "green"
+                  }
+                />
+              </View>
+            </View>
+
+            <View style={SignInstyles.forgetPass}>
+              <Text
+                style={[
+                  SignInstyles.BlueText,
+                  { textDecorationLine: "underline" },
+                ]}
+              >
+                Forget password?
+              </Text>
+              <TouchableOpacity
+                onPress={() => email && password && SignInEmployee()}
+                style={SignInstyles.button}
+              >
+                <Text style={{ color: "white" }}>Sign In</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={SignInstyles.inputContainer}>
-            {password ? <Text style={SignInstyles.label}>Password</Text> : null}
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={SignInstyles.input}
-                onChangeText={onChangePass}
-                value={password}
-                placeholder={"password"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={
-                  validatePassword(password) === false ? "transparent" : "green"
-                }
-              />
-            </View>
-          </View>
-          <View style={SignInstyles.SignInView}>
-            <Text style={SignInstyles.BlueText}>Forget password?</Text>
-            <Button
-              title="Sign In"
-              onPress={() => email && password && SignInEmployee()}
-            />
-          </View>
+
           <View style={SignInstyles.SignUpView}>
-            <Text style={SignInstyles.RegularText}>Don't have an account?</Text>
+            <Text style={SignInstyles.RegularText}>
+              Don't have an account?{" "}
+            </Text>
             <Text
               style={SignInstyles.BlueText}
               onPress={() => navigation.navigate("SignUp")}

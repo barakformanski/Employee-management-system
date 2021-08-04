@@ -7,7 +7,7 @@ const SignInstyles = EStyleSheet.create({
     backgroundColor: "#fff",
     // alignItems: "center",
     justifyContent: "space-between",
-    paddingBottom: () => EStyleSheet.value("$rem") * 10,
+    paddingBottom: () => EStyleSheet.value("$rem") * 20,
   },
   scrollView: {
     flex: 1,
@@ -15,8 +15,14 @@ const SignInstyles = EStyleSheet.create({
     justifyContent: "space-between",
     paddingTop: () => EStyleSheet.value("$rem") * 100,
   },
+  inputsContainer: {
+    // backgroundColor: "red",
+    height: "40%",
+    justifyContent: "space-between",
+    width: "75%",
+  },
   inputContainer: {
-    width: "80%",
+    // width: "80%",
   },
   input: {
     // width: () => EStyleSheet.value("$rem") * 100,
@@ -31,8 +37,8 @@ const SignInstyles = EStyleSheet.create({
     // marginRight: "24%",
     color: "#577BF9",
   },
-  SignInView: {
-    // width: "80%",
+  forgetPass: {
+    alignItems: "center",
     flexDirection: "row-reverse",
     justifyContent: "space-between",
     flexWrap: "wrap",
@@ -45,6 +51,13 @@ const SignInstyles = EStyleSheet.create({
   },
   BlueText: {
     color: "#577BF9",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#577BF9",
+
+    padding: 10,
+    borderRadius: 10,
   },
 });
 export default SignInstyles;
