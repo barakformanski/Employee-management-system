@@ -5,22 +5,34 @@ const SignUpstyles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
+    paddingBottom: () => EStyleSheet.value("$rem") * 20,
+    paddingTop: () => EStyleSheet.value("$rem") * 80,
+
     alignItems: "center",
-    justifyContent: "center",
   },
+  inputsContainer: {
+    // height: "40%",
+    justifyContent: "space-between",
+    width: "75%",
+    // backgroundColor: "red",
+  },
+
   header: {
-    alignSelf: "flex-end",
-    marginRight: "25%",
+    fontWeight: "bold",
+    // alignSelf: "flex-end",
+    // marginRight: "25%",
   },
   input: {
-    height: "2rem",
-    width: "60%",
-    margin: 12,
+    width: "100%",
+    marginVertical: () => EStyleSheet.value("$rem") * 12,
     borderBottomWidth: 1,
+
+    height: () => EStyleSheet.value("$rem") * 20,
   },
   label: {
     alignSelf: "flex-end",
-    marginRight: "25%",
+    // marginRight: "25%",
     color: "#577BF9",
   },
   SignInView: {
@@ -37,6 +49,14 @@ const SignUpstyles = EStyleSheet.create({
   },
   BlueText: {
     color: "#577BF9",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#577BF9",
+    alignSelf: "flex-end",
+    padding: 10,
+    borderRadius: 10,
+    width: () => EStyleSheet.value("$rem") * 100,
   },
 });
 export default SignUpstyles;

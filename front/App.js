@@ -83,7 +83,43 @@ export default function App() {
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{ title: "Sign Up" }}
+            options={{
+              title: "Sign In",
+              headerStyle: {
+                backgroundColor: "#f6f7f8",
+                height: EStyleSheet.value("$rem") * 250,
+                elevation: 0, // remove shadow on Android
+                shadowOpacity: 0, // remove shadow on iOS
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+                color: "black",
+              },
+
+              headerTitle: () => (
+                <View>
+                  <Text
+                    style={{
+                      textAlign: "right",
+                      fontWeight: "bold",
+                      fontSize: 30,
+                      top: EStyleSheet.value("$rem") * 120,
+                      marginRight: EStyleSheet.value("$rem") * 12,
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                  <Image
+                    style={{
+                      width: EStyleSheet.value("$rem") * 200,
+                      top: EStyleSheet.value("$rem") * 160,
+                    }}
+                    source={require("./assets/kid.png")}
+                  />
+                </View>
+              ),
+            }}
           />
           <Stack.Screen
             name="AddEmployees"

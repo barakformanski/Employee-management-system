@@ -5,7 +5,6 @@ const SignInstyles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
     justifyContent: "space-between",
     paddingBottom: () => EStyleSheet.value("$rem") * 20,
   },

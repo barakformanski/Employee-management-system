@@ -126,6 +126,7 @@ export default function SignIn({ navigation }) {
                 />
               </View>
             </View>
+
             <View style={SignInstyles.inputContainer}>
               {password ? (
                 <Text style={SignInstyles.label}>Password</Text>
