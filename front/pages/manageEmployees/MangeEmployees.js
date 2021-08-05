@@ -257,7 +257,7 @@ deleted from DB`);
               ></TouchableOpacity>
               <View
                 style={{
-                  // flex: 0.7,
+                  height: "80%",
                   // flexDirection: "column",
                   justifyContent: "space-around",
                   width: "100%",
