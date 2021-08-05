@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 import { Image, Text, View, Dimensions } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
@@ -29,13 +30,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <UserProvider value={URI}>
-        <Stack.Navigator
-          initialRouteName="Home"
-          // screenOptions={{ title: " anable if we want same title to all screens" }}
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
             name="Home"
             component={Home}
@@ -46,6 +41,7 @@ export default function App() {
             name="SignIn"
             component={SignIn}
             options={{
+              headerShown: false,
               title: "Sign In",
               headerStyle: {
                 backgroundColor: "#f6f7f8",
@@ -87,6 +83,7 @@ export default function App() {
             name="SignUp"
             component={SignUp}
             options={{
+              headerShown: false,
               title: "Sign Up",
               //   headerStyle: {
               //     backgroundColor: "#f6f7f8",
@@ -132,7 +129,27 @@ export default function App() {
           <Stack.Screen
             name="ManageEmployees"
             component={ManageEmployees}
-            options={{ title: "manage Employees" }}
+            options={({ navigation }) => ({
+              title: "Sign Up",
+              headerStyle: {
+                backgroundColor: "#f6f7f8",
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+                color: "transparent",
+              },
+              headerRight: () => (
+                <AntDesign
+                  name="left"
+                  size={24}
+                  color="black"
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+            })}
           />
           <Stack.Screen
             name="EditEmployee"

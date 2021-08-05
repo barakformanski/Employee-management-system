@@ -5,15 +5,20 @@ import {
   View,
   Text,
   ScrollView,
-  Modal,
-  Pressable,
-  TextInput,
+  TouchableOpacity,
   ActivityIndicator,
+  Modal,
+  TextInput,
+  Pressable,
+  TouchableWithoutFeedback,
 } from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+
 import { Card, ListItem, Button, Icon, Avatar } from "react-native-elements";
 import ManageEmployeesStyles from "./ManageEmployeesStyles";
 import UserContext from "../../UserContext";
-
+import { Entypo } from "@expo/vector-icons";
 export default function ManageEmployees({ navigation, route }) {
   const URI = useContext(UserContext);
 
@@ -34,6 +39,7 @@ export default function ManageEmployees({ navigation, route }) {
   const [employees, setEmployees] = useState([]);
   const [avatarNum, setAvatarNum] = useState(randomIntFromInterval(300, 1000));
   const [modalVisible, setModalVisible] = useState(false);
+  const [editOrDelEmployee, setEditOrDelEmployee] = useState();
   const deleteQuery = (idToDelete) => {
     setLoader(true);
     console.log("id to delete:", idToDelete);
@@ -41,9 +47,13 @@ export default function ManageEmployees({ navigation, route }) {
     axios.delete(`${URI}${idToDelete}`).then((res) => {
       setLoader(false);
       console.log("resFROMserver DELETE", res.data);
-      alert(`employee number ${idToDelete} deleted`);
+      alert(`employee number
+             ${idToDelete}
+
+deleted from DB`);
       setEmployees(res.data);
     });
+    setEditOrDelEmployee();
   };
 
   useFocusEffect(
@@ -70,122 +80,213 @@ export default function ManageEmployees({ navigation, route }) {
 
   return (
     <View style={ManageEmployeesStyles.container}>
+      <View style={ManageEmployeesStyles.ViewButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddEmployees")}
+          style={ManageEmployeesStyles.button}
+        >
+          <Text style={{ color: "white" }}>+</Text>
+        </TouchableOpacity>
+        <Text>Managing Employees</Text>
+      </View>
       {loader ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
-        <>
-          <Button
-            title="Add Employees"
-            onPress={() => navigation.navigate("AddEmployees")}
-          />
-          <ScrollView>
-            {employees &&
-              employees.map((employee, index) => {
-                return (
-                  <Card key={index}>
-                    {employee.avatar ? (
-                      <Avatar
-                        containerStyle={{ backgroundColor: "#d3d3d3" }}
-                        onPress={
-                          () =>
+        <ScrollView style={{ width: "90%" }}>
+          {employees &&
+            employees.map((employee, index) => {
+              return (
+                <Card
+                  key={index}
+                  containerStyle={{
+                    backgroundColor: "white",
+                    borderRadius: 10,
+                  }}
+                >
+                  {employee.avatar ? (
+                    <View style={ManageEmployeesStyles.avatarRowContainer}>
+                      <View style={ManageEmployeesStyles.avatarContainer}>
+                        <Avatar
+                          onPress={() =>
                             navigation.navigate("EditEmployee", {
                               employee: employee,
                             })
+                          }
+                          rounded
+                          source={{ uri: employee.avatar }}
+                          title="MD"
+                        />
+                        <Text
+                          style={{
+                            marginRight: EStyleSheet.value("$rem") * 10,
+                          }}
+                        >{`${employee.first_name} ${employee.last_name} `}</Text>
+                      </View>
+                      <View>
+                        <Entypo
+                          name="dots-three-vertical"
+                          size={18}
+                          color="#8F9BB3"
+                          onPress={() => {
+                            editOrDelEmployee
+                              ? setEditOrDelEmployee()
+                              : setEditOrDelEmployee(employee);
+                            setModalVisible(true);
+                          }}
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={ManageEmployeesStyles.avatarRowContainer}>
+                      <View style={ManageEmployeesStyles.avatarContainer}>
+                        <Avatar
+                          onPress={() => {
+                            navigation.navigate("EditEmployee", {
+                              employee: employee,
+                            });
+                            setModalVisible(true);
+                          }}
+                          rounded
+                          title={avatarLetters(
+                            employee.first_name || "?",
+                            employee.last_name || "?"
+                          )}
+                        />
+                        <Text
+                          style={{
+                            marginRight: EStyleSheet.value("$rem") * 10,
+                          }}
+                        >{`${employee.first_name} ${employee.last_name} `}</Text>
+                      </View>
+                      <View>
+                        <Entypo
+                          name="dots-three-vertical"
+                          size={18}
+                          color="#8F9BB3"
+                          onPress={() => {
+                            editOrDelEmployee
+                              ? setEditOrDelEmployee()
+                              : setEditOrDelEmployee(employee);
+                            setModalVisible(true);
+                          }}
+                        />
+                      </View>
+                    </View>
+                  )}
 
-                          // setModalVisible(true)
-                        }
-                        rounded
-                        source={{ uri: employee.avatar }}
-                        title="MD"
-                      />
-                    ) : (
-                      <Avatar
-                        containerStyle={{ backgroundColor: "#d3d3d3" }}
-                        onPress={() =>
-                          navigation.navigate("EditEmployee", {
-                            employee: employee,
-                          })
-                        }
-                        rounded
-                        title={avatarLetters(
-                          employee.first_name || "?",
-                          employee.last_name || "?"
-                        )}
-                      />
-                    )}
+                  <Card.Title>{`roll:${employee.roll} `}</Card.Title>
+                  <Card.Title>{`phone:${employee.phone}`}</Card.Title>
+                  <Card.Title>{`address:${employee.address}`}</Card.Title>
 
-                    {/* <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
+                  {/* </Card.Image> */}
+                </Card>
+              );
+            })}
+        </ScrollView>
+      )}
+      {editOrDelEmployee && (
+        <Modal
+          style={{ margin: 0 }}
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+            setEditOrDelEmployee();
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            }}
+            onPress={() => {
+              setEditOrDelEmployee();
+              setModalVisible(false);
+            }}
+          ></TouchableOpacity>
+          <View
+            style={{
+              height: "25%",
+              bottom: 0,
+              width: "100%",
+              position: "absolute",
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              backgroundColor: "white",
+            }}
+          >
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setEditOrDelEmployee();
+                  setModalVisible(false);
+                }}
+                style={{
+                  marginVertical: 10,
+                  height: 8,
+                  width: 50,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  alignSelf: "center",
+                  borderRadius: 10,
+                }}
+              ></TouchableOpacity>
+              <View
+                style={{
+                  // flex: 0.7,
+                  // flexDirection: "column",
+                  justifyContent: "space-around",
+                  width: "100%",
+                  paddingRight: EStyleSheet.value("$rem") * 30,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("EditEmployee", {
+                      // employee: employee,
+                      employee: editOrDelEmployee,
+                    });
+                    setEditOrDelEmployee();
                   }}
                 >
-                  <View style={ManageEmployeesStyles.centeredView}>
-                    <View style={ManageEmployeesStyles.modalView}>
-                      <Text style={ManageEmployeesStyles.modalText}>
-                        Hello World!
-                      </Text>
-                      <TextInput
-                        style={ManageEmployeesStyles.input}
-                        onChangeText={setAvatarNum}
-                        value={avatarNum}
-                        placeholder={"choose num between 300-1000"}
-                      />
-                      <Pressable
-                        style={[
-                          ManageEmployeesStyles.button,
-                          ManageEmployeesStyles.buttonClose,
-                        ]}
-                        onPress={() => setModalVisible(!modalVisible)}
-                      >
-                        <Text style={ManageEmployeesStyles.textStyle}>
-                          Hide Modal
-                        </Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </Modal> */}
+                  <Text>Edit</Text>
+                </TouchableOpacity>
 
-                    <Card.Title>{`name:${employee.first_name} ${employee.last_name} `}</Card.Title>
-                    <Card.Title>{`roll:${employee.roll} `}</Card.Title>
-                    <Card.Title>{`phone:${employee.phone}`}</Card.Title>
-                    <Card.Title>{`address:${employee.address}`}</Card.Title>
+                <TouchableOpacity
+                  onPress={() => deleteQuery(editOrDelEmployee._id)}
+                >
+                  <Text>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
 
-                    <Button
-                      icon={<Icon name="code" color="#ffffff" />}
-                      buttonStyle={{
-                        borderRadius: 0,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        marginBottom: 0,
-                      }}
-                      title="EDIT"
-                      onPress={() =>
-                        navigation.navigate("EditEmployee", {
-                          employee: employee,
-                        })
-                      }
-                    />
-                    <Button
-                      icon={<Icon name="code" color="#ffffff" />}
-                      buttonStyle={{
-                        borderRadius: 0,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        marginBottom: 0,
-                      }}
-                      title="DELETE"
-                      onPress={() => deleteQuery(employee._id)}
-                    />
-                    {/* </Card.Image> */}
-                  </Card>
-                );
-              })}
-          </ScrollView>
-        </>
+        // <View
+        //   style={{
+        //     height: EStyleSheet.value("$rem") * 100,
+        //     backgroundColor: "white",
+        //     width: "100%",
+        //     borderTopLeftRadius: 15,
+        //     borderTopRightRadius: 15,
+        //   }}
+        // >
+        //   <TouchableOpacity
+        //     onPress={() => {
+        //       navigation.navigate("EditEmployee", {
+        //         // employee: employee,
+        //         employee: editOrDelEmployee,
+        //       });
+        //       setEditOrDelEmployee();
+        //     }}
+        //   >
+        //     <Text>Edit</Text>
+        //   </TouchableOpacity>
+
+        //   <TouchableOpacity onPress={() => deleteQuery(editOrDelEmployee._id)}>
+        //     <Text>Delete</Text>
+        //   </TouchableOpacity>
+        // </View>
       )}
     </View>
   );

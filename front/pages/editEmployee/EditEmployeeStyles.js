@@ -13,7 +13,7 @@ const EditEmployeeStyles = EStyleSheet.create({
     marginRight: "25%",
   },
   input: {
-    height: "2rem",
+    height: 18,
     width: "60%",
     margin: 12,
     borderBottomWidth: 1,
