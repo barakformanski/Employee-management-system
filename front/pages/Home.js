@@ -7,7 +7,7 @@ import UserContext from "../UserContext";
 export default function Home({ navigation, route }) {
   const URI = useContext(UserContext);
 
-  const { email } = route.params;
+  const { userEmail, userName } = route.params;
   const [employee, setEmployee] = useState("you have to sign in first");
   const [test, setTest] = useState(false);
 
@@ -20,8 +20,8 @@ export default function Home({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      {email ? (
-        <Text>welcome, {email}!</Text>
+      {userEmail ? (
+        <Text>welcome, {userEmail}!</Text>
       ) : (
         <Text>welcome, {employee}!</Text>
       )}

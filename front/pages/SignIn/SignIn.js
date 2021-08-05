@@ -33,8 +33,9 @@ import Header from "../../utils/components/Header";
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 // import { faCheckCircle, faEye } from "@fortawesome/free-solid-svg-icons";
-export default function SignIn({ navigation }) {
+export default function SignIn({ navigation, route }) {
   const URI = useContext(UserContext);
+  const [userName, setUserName] = useState();
 
   const [loader, setLoader] = useState(false);
   const [email, onChangeEmail] = useState("");
@@ -64,10 +65,18 @@ export default function SignIn({ navigation }) {
           ? alert("user not fond")
           : res.data.user_type === "admin"
           ? navigation.navigate("ManageEmployees", { user: res.data })
-          : navigation.navigate("Home", {
-              email: res.data.email,
-              password: res.data.password,
-            });
+          : // : navigation.navigate("SignIn", {
+          //     userEmail: res.data.email,
+          //     userPassword: res.data.password,
+          //   });
+
+          res.data.first_name
+          ? setUserName(res.data.email)
+          : res.data.last_name
+          ? setUserName(res.data.last_name)
+          : setUserName(`Hello ${res.data.email},we don't have your name..`);
+
+        console.log("res.data", res.data);
       }
     });
   };
@@ -106,7 +115,26 @@ export default function SignIn({ navigation }) {
   return (
     <ScrollView contentContainerStyle={SignInstyles.scrollViewContainer}>
       <Header title="Sign In" image={true} />
-
+      {userName && (
+        <View style={{ marginTop: 40 }}>
+          {<Text>Welcome Mr {userName}!</Text>}
+          <Text>You are not Admin so you can't see employees details</Text>
+          <Text>For admin acces (just for the demo...) type:</Text>
+          <Text>Email:barakformanski@gmail.com</Text>
+          <Text>Password:bf</Text>
+          <Text>Or SignUp as admin:</Text>
+          <Text>1. Press the SignUp botton below</Text>
+          <Text>2. Fill out your details</Text>
+          <Text>3. On the RETYPE PASSWORD field ad the letters:</Text>
+          <Text>admin</Text>
+          <Text>after the password you choose</Text>
+          <Text>for example:</Text>
+          <Text>password: abc</Text>
+          <Text>retypePassword: abcadmin</Text>
+          <Text>call me if you need help</Text>
+          <Text>Barak 0545665174</Text>
+        </View>
+      )}
       {!loader ? (
         <View style={SignInstyles.secondContainer}>
           <View style={SignInstyles.inputsContainer}>
@@ -172,9 +200,7 @@ export default function SignIn({ navigation }) {
           </View>
 
           <View style={SignInstyles.SignInView}>
-            <Text style={SignInstyles.RegularText}>
-              Don't have an account?{" "}
-            </Text>
+            <Text style={SignInstyles.RegularText}>Don't have an account?</Text>
             <Text
               style={SignInstyles.BlueText}
               onPress={() => navigation.navigate("SignUp")}

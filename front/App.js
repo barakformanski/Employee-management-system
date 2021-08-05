@@ -22,15 +22,13 @@ EStyleSheet.build({
   $textColor: "#0275d8",
 });
 
-// EStyleSheet.build();
-
 export default function App() {
   const URI = "https://employees-managment.herokuapp.com/";
 
   return (
     <NavigationContainer>
       <UserProvider value={URI}>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="SignIn">
           <Stack.Screen
             name="Home"
             component={Home}
