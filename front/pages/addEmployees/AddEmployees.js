@@ -29,6 +29,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserContext from "../../UserContext";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity
@@ -166,37 +167,41 @@ export default function AddEmployees({ navigation }) {
   };
 
   return (
-    <View style={AddEmployeesStyles.container}>
-      {loader ? (
-        <ActivityIndicator />
-      ) : (
-        <>
-          <Text style={AddEmployeesStyles.header}>Personal Details</Text>
-          <ScrollView>
-            {firstName ? (
-              <Text style={AddEmployeesStyles.label}>First Name</Text>
-            ) : null}
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-                onPress={() => setFlatList(true)}
-              >
-                <TextInput
-                  style={AddEmployeesStyles.input}
-                  onChangeText={onChangeFirstName}
-                  value={firstName}
-                  placeholder={"firstName"}
-                />
-                <Ionicons
-                  name="md-checkmark-circle"
-                  size={32}
-                  color={
-                    validateName(firstName) === false ? "transparent" : "green"
-                  }
-                />
+    <ScrollView contentContainerStyle={AddEmployeesStyles.scrollViewContainer}>
+      {/* <View style={AddEmployeesStyles.container}> */}
+
+      {!loader ? (
+        <View style={AddEmployeesStyles.secondContainer}>
+          <Text style={AddEmployeesStyles.header}>Add Employees</Text>
+          <View style={AddEmployeesStyles.inputsContainer}>
+            <View style={AddEmployeesStyles.inputContainer}>
+              {firstName ? (
+                <Text style={AddEmployeesStyles.label}>First Name</Text>
+              ) : null}
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                  onPress={() => setFlatList(true)}
+                >
+                  <TextInput
+                    style={AddEmployeesStyles.input}
+                    onChangeText={onChangeFirstName}
+                    value={firstName}
+                    placeholder={"firstName"}
+                  />
+                  <Ionicons
+                    name="md-checkmark-circle"
+                    size={32}
+                    color={
+                      validateName(firstName) === false
+                        ? "transparent"
+                        : "green"
+                    }
+                  />
+                </View>
               </View>
 
               {firstName.length === 1 && flatList ? (
@@ -214,77 +219,102 @@ export default function AddEmployees({ navigation }) {
                 </SafeAreaView>
               ) : null}
             </View>
-            {lastName ? (
-              <Text style={AddEmployeesStyles.label}>Last Name</Text>
-            ) : null}
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={AddEmployeesStyles.input}
-                onChangeText={onChangeLastName}
-                value={lastName}
-                placeholder={"lastName"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={
-                  validateName(lastName) === false ? "transparent" : "green"
-                }
-              />
+
+            <View style={AddEmployeesStyles.inputContainer}>
+              {lastName ? (
+                <Text style={AddEmployeesStyles.label}>Last Name</Text>
+              ) : null}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={AddEmployeesStyles.input}
+                  onChangeText={onChangeLastName}
+                  value={lastName}
+                  placeholder={"lastName"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    validateName(lastName) === false ? "transparent" : "green"
+                  }
+                />
+              </View>
             </View>
 
-            {phone ? <Text style={AddEmployeesStyles.label}>Phone</Text> : null}
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={AddEmployeesStyles.input}
-                onChangeText={onChangePhone}
-                value={phone}
-                placeholder={"Phone"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={phone && validatePhone(phone) ? "green" : "transparent"}
-              />
+            <View style={AddEmployeesStyles.inputContainer}>
+              {phone ? (
+                <Text style={AddEmployeesStyles.label}>Phone</Text>
+              ) : null}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={AddEmployeesStyles.input}
+                  onChangeText={onChangePhone}
+                  value={phone}
+                  placeholder={"Phone"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    phone && validatePhone(phone) ? "green" : "transparent"
+                  }
+                />
+              </View>
             </View>
 
-            {address ? (
-              <Text style={AddEmployeesStyles.label}>Address</Text>
-            ) : null}
+            <View style={AddEmployeesStyles.inputContainer}>
+              {address ? (
+                <Text style={AddEmployeesStyles.label}>Address</Text>
+              ) : null}
 
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={AddEmployeesStyles.input}
-                onChangeText={onChangeAddress}
-                value={address}
-                placeholder={"Address"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={
-                  validateAddress(address) === false ? "transparent" : "green"
-                }
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={AddEmployeesStyles.input}
+                  onChangeText={onChangeAddress}
+                  value={address}
+                  placeholder={"Address"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={
+                    validateAddress(address) === false ? "transparent" : "green"
+                  }
+                />
+              </View>
             </View>
 
-            {roll ? <Text style={AddEmployeesStyles.label}>Roll</Text> : null}
+            <View style={AddEmployeesStyles.inputContainer}>
+              {roll ? <Text style={AddEmployeesStyles.label}>Roll</Text> : null}
 
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={AddEmployeesStyles.input}
-                onChangeText={onChangeRoll}
-                value={roll}
-                placeholder={"Roll"}
-              />
-              <Ionicons
-                name="md-checkmark-circle"
-                size={32}
-                color={validateName(roll) === false ? "transparent" : "green"}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  style={AddEmployeesStyles.input}
+                  onChangeText={onChangeRoll}
+                  value={roll}
+                  placeholder={"Roll"}
+                />
+                <Ionicons
+                  name="md-checkmark-circle"
+                  size={32}
+                  color={validateName(roll) === false ? "transparent" : "green"}
+                />
+              </View>
             </View>
-          </ScrollView>
-
+          </View>
+          <TouchableOpacity
+            onPress={() => validation()}
+            style={AddEmployeesStyles.addButton}
+          >
+            <Text style={{ color: "white" }}>Add</Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: EStyleSheet.value("$rem") * 200,
+              // width: "100%",
+              backgroundColor: "tranparent",
+            }}
+          ></View>
           <Modal
             animationType="slide"
             transparent={true}
@@ -329,10 +359,11 @@ export default function AddEmployees({ navigation }) {
               </View>
             </View>
           </Modal>
-
-          <Button title="Add" onPress={() => validation()} />
-        </>
+        </View>
+      ) : (
+        <ActivityIndicator />
       )}
-    </View>
+      {/* </View> */}
+    </ScrollView>
   );
 }

@@ -2,13 +2,15 @@ import React from "react";
 import { Image, Text, View, Dimensions } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
-export default function Header({ title }) {
+export default function Header({ title, image }) {
   return (
     <View
       style={{
         width: "100%",
-        height: EStyleSheet.value("$rem") * 275,
-        backgroundColor: "#f8f8f8",
+        height: image
+          ? EStyleSheet.value("$rem") * 275
+          : EStyleSheet.value("$rem") * 0,
+        backgroundColor: image ? "#f8f8f8" : "white",
         // justifyContent: "center",
       }}
     >
@@ -16,23 +18,26 @@ export default function Header({ title }) {
         style={{
           textAlign: "right",
           fontWeight: "bold",
-          fontSize: 30,
+          fontSize: image ? 30 : 20,
           alignSelf: "flex-end",
           marginRight: EStyleSheet.value("$rem") * 30,
 
-          top: EStyleSheet.value("$rem") * 110,
+          top: image
+            ? EStyleSheet.value("$rem") * 110
+            : EStyleSheet.value("$rem") * 0,
         }}
       >
         {title}
       </Text>
-
-      <Image
-        style={{
-          top: EStyleSheet.value("$rem") * 160,
-          left: EStyleSheet.value("$rem") * 12,
-        }}
-        source={require("../../assets/kid.png")}
-      />
+      {image && (
+        <Image
+          style={{
+            top: EStyleSheet.value("$rem") * 160,
+            left: EStyleSheet.value("$rem") * 12,
+          }}
+          source={require("../../assets/kid.png")}
+        />
+      )}
     </View>
   );
 }

@@ -104,7 +104,7 @@ export default function SignIn({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={SignInstyles.scrollViewContainer}>
-      <Header title="Sign In" />
+      <Header title="Sign In" image={true} />
 
       {!loader ? (
         <View style={SignInstyles.secondContainer}>

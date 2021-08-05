@@ -124,7 +124,27 @@ export default function App() {
           <Stack.Screen
             name="AddEmployees"
             component={AddEmployees}
-            options={{ title: "Add Employees" }}
+            options={({ navigation }) => ({
+              title: "Add Employees",
+              headerStyle: {
+                backgroundColor: "white",
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+                color: "transparent",
+              },
+              headerRight: () => (
+                <AntDesign
+                  name="left"
+                  size={24}
+                  color="#8F9BB3"
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+            })}
           />
           <Stack.Screen
             name="ManageEmployees"
@@ -145,7 +165,7 @@ export default function App() {
                 <AntDesign
                   name="left"
                   size={24}
-                  color="black"
+                  color="#8F9BB3"
                   onPress={() => navigation.goBack()}
                 />
               ),

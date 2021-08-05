@@ -103,7 +103,7 @@ export default function SignUp({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={SignUpstyles.scrollViewContainer}>
-      <Header title="Sign Up" />
+      <Header title="Sign Up" image={true} />
       {!loader ? (
         <View style={SignUpstyles.secondContainer}>
           <View style={SignUpstyles.inputsContainer}>
