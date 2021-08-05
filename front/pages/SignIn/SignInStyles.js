@@ -2,39 +2,35 @@ import { StyleSheet } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 const SignInstyles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  scrollViewContainer: {
+    backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
     paddingBottom: () => EStyleSheet.value("$rem") * 20,
-  },
-  scrollView: {
-    flex: 1,
+    paddingTop: () => EStyleSheet.value("$rem") * 30,
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: () => EStyleSheet.value("$rem") * 100,
+  },
+  secondContainer: {
+    flex: 1,
+    marginTop: () => EStyleSheet.value("$rem") * 70,
+    paddingHorizontal: () => EStyleSheet.value("$rem") * 20,
   },
   inputsContainer: {
-    // backgroundColor: "red",
-    height: "40%",
     justifyContent: "space-between",
     width: "75%",
+    marginBottom: () => EStyleSheet.value("$rem") * 30,
   },
   inputContainer: {
-    // width: "80%",
+    height: () => EStyleSheet.value("$rem") * 70,
+    justifyContent: "flex-start",
   },
   input: {
-    // width: () => EStyleSheet.value("$rem") * 100,
     width: "100%",
-    marginVertical: () => EStyleSheet.value("$rem") * 12,
     borderBottomWidth: 1,
-
-    height: () => EStyleSheet.value("$rem") * 20,
   },
   label: {
     alignSelf: "flex-end",
-    // marginRight: "24%",
     color: "#577BF9",
+    fontWeight: "bold",
   },
   forgetPass: {
     alignItems: "center",
@@ -42,8 +38,11 @@ const SignInstyles = EStyleSheet.create({
     justifyContent: "space-between",
     flexWrap: "wrap",
   },
-  SignUpView: {
+  SignInView: {
     flexDirection: "row-reverse",
+    marginTop: () => EStyleSheet.value("$rem") * 40,
+    marginBottom: () => EStyleSheet.value("$rem") * 80,
+    justifyContent: "center",
   },
   RegularText: {
     color: "black",

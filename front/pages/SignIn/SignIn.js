@@ -27,6 +27,7 @@ import {
 } from "../../utils/components/validation";
 import { Ionicons } from "@expo/vector-icons";
 import { paddingBottom } from "styled-system";
+import Header from "../../utils/components/Header";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -102,11 +103,11 @@ export default function SignIn({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={SignInstyles.container}>
-      {loader ? (
-        <ActivityIndicator size="small" color="#0000ff" />
-      ) : (
-        <ScrollView contentContainerStyle={SignInstyles.scrollView}>
+    <ScrollView contentContainerStyle={SignInstyles.scrollViewContainer}>
+      <Header title="Sign In" />
+
+      {!loader ? (
+        <View style={SignInstyles.secondContainer}>
           <View style={SignInstyles.inputsContainer}>
             <View style={SignInstyles.inputContainer}>
               {email ? <Text style={SignInstyles.label}>Email</Text> : null}
@@ -168,7 +169,7 @@ export default function SignIn({ navigation }) {
             </View>
           </View>
 
-          <View style={SignInstyles.SignUpView}>
+          <View style={SignInstyles.SignInView}>
             <Text style={SignInstyles.RegularText}>
               Don't have an account?{" "}
             </Text>
@@ -182,8 +183,10 @@ export default function SignIn({ navigation }) {
           <View>
             <TermsOfUse />
           </View>
-        </ScrollView>
+        </View>
+      ) : (
+        <ActivityIndicator size="small" color="#0000ff" />
       )}
-    </SafeAreaView>
+    </ScrollView>
   );
 }
