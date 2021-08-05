@@ -34,5 +34,12 @@ const ManageEmployeesStyles = EStyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  cardrows: {
+    flexDirection: "row-reverse",
+    // alignItems: "center",
+    marginTop: () => EStyleSheet.value("$rem") * 10,
+    marginBottom: () => EStyleSheet.value("$rem") * 10,
+    marginLeft: () => EStyleSheet.value("$rem") * 40,
+  },
 });
 export default ManageEmployeesStyles;

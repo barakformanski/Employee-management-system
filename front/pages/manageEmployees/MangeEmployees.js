@@ -13,7 +13,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Swipeable from "react-native-gesture-handler/Swipeable";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 import { Card, ListItem, Button, Icon, Avatar } from "react-native-elements";
 import ManageEmployeesStyles from "./ManageEmployeesStyles";
@@ -174,11 +175,34 @@ deleted from DB`);
                     </View>
                   )}
 
-                  <Card.Title>{`roll:${employee.roll} `}</Card.Title>
-                  <Card.Title>{`phone:${employee.phone}`}</Card.Title>
-                  <Card.Title>{`address:${employee.address}`}</Card.Title>
+                  <View style={ManageEmployeesStyles.cardrows}>
+                    <MaterialIcons
+                      name="work-outline"
+                      size={24}
+                      color="black"
+                    />
+                    <View
+                      style={{
+                        flexDirection: "column",
 
-                  {/* </Card.Image> */}
+                        marginRight: EStyleSheet.value("$rem") * 10,
+                      }}
+                    >
+                      <Text>{`${employee.roll}`}</Text>
+                      <Text
+                        style={{ fontSize: 10, color: "#8F9BB3" }}
+                      >{`Start Date: 2 Feb 2020 `}</Text>
+                    </View>
+                  </View>
+
+                  <View style={ManageEmployeesStyles.cardrows}>
+                    <Feather name="phone" size={24} color="black" />
+                    <Text>{`${employee.phone}`}</Text>
+                  </View>
+                  <View style={ManageEmployeesStyles.cardrows}>
+                    <Ionicons name="location-outline" size={24} color="black" />
+                    <Text>{`${employee.address}`}</Text>
+                  </View>
                 </Card>
               );
             })}
