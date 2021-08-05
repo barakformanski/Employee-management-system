@@ -61,7 +61,7 @@ export default function SignUp({ navigation }) {
       console.log("res.data", res.data);
       {
         !res.data
-          ? alert("employee alreadt exist")
+          ? alert("employee already exist(same email)")
           : res.data.user_type === "employee"
           ? navigation.navigate("Home", {
               email: res.data.email,

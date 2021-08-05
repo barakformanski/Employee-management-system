@@ -29,6 +29,7 @@ const AddEmployeesStyles = EStyleSheet.create({
     // alignSelf: "flex-end",
     fontWeight: "bold",
     fontSize: 18,
+    marginBottom: () => EStyleSheet.value("$rem") * 30,
     // height: () => EStyleSheet.value("$rem") * 30,
   },
   inputsContainer: {
@@ -37,7 +38,7 @@ const AddEmployeesStyles = EStyleSheet.create({
     marginBottom: () => EStyleSheet.value("$rem") * 30,
   },
   inputContainer: {
-    height: () => EStyleSheet.value("$rem") * 70,
+    height: () => EStyleSheet.value("$rem") * 80,
     justifyContent: "flex-start",
   },
   input: {
@@ -66,9 +67,10 @@ const AddEmployeesStyles = EStyleSheet.create({
   },
 
   item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    alignItems: "center",
+    backgroundColor: "blue",
+    opacity: 0.1,
+    padding: 10,
   },
   title: {
     fontSize: 32,

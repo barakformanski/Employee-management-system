@@ -14,6 +14,7 @@ import {
   Modal,
   alert,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -30,6 +31,7 @@ import { Picker } from "@react-native-picker/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserContext from "../../UserContext";
 import EStyleSheet from "react-native-extended-stylesheet";
+import { minWidth, padding } from "styled-system";
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity
@@ -99,6 +101,7 @@ export default function AddEmployees({ navigation }) {
 
   useEffect(() => {
     !firstName && setFlatList(true);
+    console.log("fisr name:", firstName);
   }, [firstName]);
 
   const AddEmployee = () => {
@@ -162,7 +165,7 @@ export default function AddEmployees({ navigation }) {
     ) {
       AddEmployee();
     } else {
-      alert("you have to fill he inputs properly first");
+      Alert.alert("you have to fill the inputs properly first");
     }
   };
 
@@ -172,7 +175,7 @@ export default function AddEmployees({ navigation }) {
 
       {!loader ? (
         <View style={AddEmployeesStyles.secondContainer}>
-          <Text style={AddEmployeesStyles.header}>Add Employees</Text>
+          <Text style={AddEmployeesStyles.header}>Add or Edit Employees</Text>
           <View style={AddEmployeesStyles.inputsContainer}>
             <View style={AddEmployeesStyles.inputContainer}>
               {firstName ? (
@@ -203,21 +206,6 @@ export default function AddEmployees({ navigation }) {
                   />
                 </View>
               </View>
-
-              {firstName.length === 1 && flatList ? (
-                <SafeAreaView
-                  style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}
-                >
-                  <FlatList
-                    data={employees}
-                    renderItem={renderItem}
-                    keyExtractor={(employee) => employee._id}
-                    extraData={selectedId}
-
-                    // numColumns={3}
-                  />
-                </SafeAreaView>
-              ) : null}
             </View>
 
             <View style={AddEmployeesStyles.inputContainer}>
@@ -308,54 +296,136 @@ export default function AddEmployees({ navigation }) {
           >
             <Text style={{ color: "white" }}>Add</Text>
           </TouchableOpacity>
-          <View
-            style={{
-              height: EStyleSheet.value("$rem") * 200,
-              // width: "100%",
-              backgroundColor: "tranparent",
-            }}
-          ></View>
+
+          {firstName.length === 1 && flatList ? (
+            <ScrollView
+              style={{
+                // height: EStyleSheet.value("$rem") * 500,
+                zIndex: 100,
+                // position: "absolute",
+                top: EStyleSheet.value("$rem") * -350,
+                width: EStyleSheet.value("$rem") * 150,
+              }}
+            >
+              <Text>
+                You can choose and edit an exiting employee from the list
+              </Text>
+              <Button
+                title="close"
+                onPress={() => {
+                  setFlatList(false);
+                }}
+              />
+              {employees.map((item, index) => (
+                <Item
+                  key={index}
+                  item={item}
+                  onPress={() => {
+                    setSelectedId(item._id);
+                    onChangeFirstName(item.first_name);
+                    onChangeLastName(item.last_name);
+                    onChangePhone(item.phone);
+                    onChangeAddress(item.address);
+                    onChangeRoll(item.roll);
+
+                    setFlatList(false);
+                  }}
+                  // backgroundColor={{ backgroundColor }}
+                  // textColor={{ color }}
+                />
+
+                // <TouchableOpacity>
+                //   <Text
+                //     style={{
+                //       backgroundColor: "red",
+
+                //     }}
+                //   >
+                //     {employee.first_name}
+                //   </Text>
+                // </TouchableOpacity>
+              ))}
+            </ScrollView>
+          ) : (
+            // ) :  <SafeAreaView
+            //   style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}
+            // >
+            //   <FlatList
+            //     data={employees}
+            //     renderItem={renderItem}
+            //     keyExtractor={(employee) => employee._id}
+            //     extraData={selectedId}
+            //   />
+            // </SafeAreaView>
+
+            <View
+              style={{
+                height: EStyleSheet.value("$rem") * 200,
+                backgroundColor: "tranparent",
+              }}
+            ></View>
+          )}
+
           <Modal
             animationType="slide"
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+              // Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >
             <View style={AddEmployeesStyles.centeredView}>
               <View style={AddEmployeesStyles.modalView}>
                 <Text style={AddEmployeesStyles.modalText}>
-                  העובד קיים במערכת, בחר מה ברצונך לעשות
+                  העובד קיים במערכת
                 </Text>
-                <Pressable
-                  style={[
-                    AddEmployeesStyles.button,
-                    AddEmployeesStyles.buttonClose,
-                  ]}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
+                <Text style={AddEmployeesStyles.modalText}>
+                  (מזוהה לפי מספר נייד)
+                </Text>
+                <Text style={AddEmployeesStyles.modalText}>
+                  בחר כיצד ברצונך לפעול
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "column",
+                    marginTop: 40,
+                    justifyContent: "space-around",
                   }}
                 >
-                  <Text style={AddEmployeesStyles.textStyle}>
-                    סגור ומלא את הפרטים מחדש
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    AddEmployeesStyles.button,
-                    AddEmployeesStyles.buttonClose,
-                  ]}
-                  onPress={() => {
-                    EditEmployeeByName();
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text style={AddEmployeesStyles.textStyle}>
-                    עדכן את פרטי העובד הנבחר לפרטים שמילאתי
-                  </Text>
-                </Pressable>
+                  <Pressable
+                    style={[
+                      AddEmployeesStyles.addButton,
+                      { minWidth: 200 },
+                      // AddEmployeesStyles.button,
+                      // AddEmployeesStyles.buttonClose,
+                    ]}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text style={AddEmployeesStyles.textStyle}>
+                      חזור ליצור עובד חדש
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={[
+                      AddEmployeesStyles.addButton,
+                      { minWidth: 200, marginTop: 20 },
+
+                      // AddEmployeesStyles.button,
+                      // AddEmployeesStyles.buttonClose,
+                    ]}
+                    onPress={() => {
+                      EditEmployeeByName();
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text style={AddEmployeesStyles.textStyle}>
+                      עדכן עובד קיים
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </Modal>

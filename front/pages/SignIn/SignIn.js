@@ -20,6 +20,7 @@ import UserContext from "../../UserContext";
 import TermsOfUse from "../../utils/components/TermsOfIse";
 import axios from "axios";
 import EStyleSheet from "react-native-extended-stylesheet";
+import { Entypo } from "@expo/vector-icons";
 
 import {
   validateEmail,
@@ -139,6 +140,7 @@ export default function SignIn({ navigation }) {
                   value={password}
                   placeholder={"password"}
                 />
+
                 <Ionicons
                   name="md-checkmark-circle"
                   size={32}
