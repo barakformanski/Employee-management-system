@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 
 import {
@@ -34,12 +34,19 @@ import Header from "../../utils/components/Header";
 
 // import { faCheckCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 export default function SignIn({ navigation, route }) {
+  const [employeeFromSignUp, setEmployeeFromSignUp] = useState();
   const URI = useContext(UserContext);
   const [userName, setUserName] = useState();
 
   const [loader, setLoader] = useState(false);
   const [email, onChangeEmail] = useState("");
   const [password, onChangePass] = useState("");
+
+  useEffect(() => {
+    setEmployeeFromSignUp(route.params);
+    console.log("route.params", route.params);
+    setUserName(route.params.employee.first_name);
+  }, [route]);
 
   const SignInEmployee = () => {
     setLoader(true);

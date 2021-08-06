@@ -47,7 +47,7 @@ export default function SignUp({ navigation }) {
       // url: "http://192.168.85.63:5000/signUp",
       url: `${URI}signUp`,
       data: {
-        fisrt_name: firstName,
+        first_name: firstName,
         last_name: lastName,
         email: email,
         password: password,
@@ -62,17 +62,14 @@ export default function SignUp({ navigation }) {
       {
         !res.data
           ? alert("employee already exist(same email)")
-          : res.data.user_type === "employee"
-          ? navigation.navigate("Home", {
-              email: res.data.email,
-              password: res.data.password,
-            })
           : res.data.user_type === "admin"
           ? navigation.navigate("ManageEmployees", {
               email: res.data.email,
               password: res.data.password,
             })
-          : null;
+          : navigation.navigate("SignIn", {
+              employee: res.data,
+            });
       }
       // navigation.navigate("Home", { email: res.data.email });
     });
