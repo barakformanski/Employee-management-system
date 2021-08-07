@@ -57,7 +57,6 @@ export default function SignUp({ navigation }) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      setLoader(false);
       console.log("res.data", res.data);
       {
         !res.data
@@ -68,9 +67,12 @@ export default function SignUp({ navigation }) {
               password: res.data.password,
             })
           : navigation.navigate("SignIn", {
-              employee: res.data,
+              first_name: res.data.first_name,
+              // password: res.data.password,
             });
       }
+      setLoader(false);
+
       // navigation.navigate("Home", { email: res.data.email });
     });
   };

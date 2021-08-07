@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useFocusEffect } from "react";
 
 import {
   TouchableOpacity,
@@ -27,7 +27,7 @@ import {
   validatePassword,
 } from "../../utils/components/validation";
 import { Ionicons } from "@expo/vector-icons";
-import { paddingBottom } from "styled-system";
+import { paddingBottom, width } from "styled-system";
 import Header from "../../utils/components/Header";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -37,16 +37,13 @@ export default function SignIn({ navigation, route }) {
   const [employeeFromSignUp, setEmployeeFromSignUp] = useState();
   const URI = useContext(UserContext);
   const [userName, setUserName] = useState();
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [eyeIcon, setEyeIcon] = useState("eye-off");
 
   const [loader, setLoader] = useState(false);
   const [email, onChangeEmail] = useState("");
   const [password, onChangePass] = useState("");
-
-  useEffect(() => {
-    setEmployeeFromSignUp(route.params);
-    console.log("route.params", route.params);
-    setUserName(route.params.employee.first_name);
-  }, [route]);
+  const { first_name } = route.params;
 
   const SignInEmployee = () => {
     setLoader(true);
@@ -71,20 +68,17 @@ export default function SignIn({ navigation, route }) {
         !res.data
           ? alert("user not fond")
           : res.data.user_type === "admin"
-          ? navigation.navigate("ManageEmployees", { user: res.data })
-          : // : navigation.navigate("SignIn", {
-          //     userEmail: res.data.email,
-          //     userPassword: res.data.password,
-          //   });
-
-          res.data.first_name
-          ? setUserName(res.data.email)
-          : res.data.last_name
-          ? setUserName(res.data.last_name)
-          : setUserName(`Hello ${res.data.email},we don't have your name..`);
-
-        console.log("res.data", res.data);
+          ? navigation.navigate(
+              "ManageEmployees",
+              { user: res.data }
+              // <Welcome>setUserName(res.data.first_name)</Welcome>
+            )
+          : setUserName(res.data.first_name);
+        // : res.data.last_name
+        // ? setUserName(res.data.last_name)
+        // : setUserName(`Hello ${res.data.email},we don't have your name..`);
       }
+      console.log("res.data", res.data);
     });
   };
 
@@ -122,17 +116,22 @@ export default function SignIn({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={SignInstyles.scrollViewContainer}>
       <Header title="Sign In" image={true} />
-      {userName && (
+      {userName || first_name ? (
         <View style={{ marginTop: 40 }}>
-          {<Text>Welcome Mr {userName}!</Text>}
+          {
+            <Text>
+              Welcome Mr/s {userName && userName}
+              {first_name && first_name} !
+            </Text>
+          }
           <Text>You are not Admin so you can't see employees details</Text>
           <Text>For admin acces (just for the demo...) type:</Text>
-          <Text>Email:barakformanski@gmail.com</Text>
-          <Text>Password:bf</Text>
+          <Text>Email:Barakformanski@gmail.com</Text>
+          <Text>Password:Bf</Text>
           <Text>Or SignUp as admin:</Text>
           <Text>1. Press the SignUp botton below</Text>
           <Text>2. Fill out your details</Text>
-          <Text>3. On the RETYPE PASSWORD field ad the letters:</Text>
+          <Text>3. On the RETYPE PASSWORD field add the letters:</Text>
           <Text>admin</Text>
           <Text>after the password you choose</Text>
           <Text>for example:</Text>
@@ -141,7 +140,7 @@ export default function SignIn({ navigation, route }) {
           <Text>call me if you need help</Text>
           <Text>Barak 0545665174</Text>
         </View>
-      )}
+      ) : null}
       {!loader ? (
         <View style={SignInstyles.secondContainer}>
           <View style={SignInstyles.inputsContainer}>
@@ -149,7 +148,7 @@ export default function SignIn({ navigation, route }) {
               {email ? <Text style={SignInstyles.label}>Email</Text> : null}
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <TextInput
-                  style={SignInstyles.input}
+                  style={[SignInstyles.input, { marginLeft: "10%" }]}
                   onChangeText={onChangeEmail}
                   value={email}
                   placeholder={"email"}
@@ -169,11 +168,23 @@ export default function SignIn({ navigation, route }) {
                 <Text style={SignInstyles.label}>Password</Text>
               ) : null}
               <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons
+                  onPress={() => {
+                    setSecureTextEntry(!secureTextEntry);
+                    eyeIcon === "eye-off"
+                      ? setEyeIcon("eye")
+                      : setEyeIcon("eye-off");
+                  }}
+                  name={eyeIcon}
+                  size={24}
+                  color="black"
+                />
                 <TextInput
                   style={SignInstyles.input}
                   onChangeText={onChangePass}
                   value={password}
                   placeholder={"password"}
+                  secureTextEntry={secureTextEntry}
                 />
 
                 <Ionicons
@@ -198,7 +209,13 @@ export default function SignIn({ navigation, route }) {
                 Forget password?
               </Text>
               <TouchableOpacity
-                onPress={() => email && password && SignInEmployee()}
+                onPress={() => {
+                  navigation.setParams({
+                    first_name: null,
+                  });
+
+                  email && password && SignInEmployee();
+                }}
                 style={SignInstyles.button}
               >
                 <Text style={{ color: "white" }}>Sign In</Text>
@@ -210,7 +227,15 @@ export default function SignIn({ navigation, route }) {
             <Text style={SignInstyles.RegularText}>Don't have an account?</Text>
             <Text
               style={SignInstyles.BlueText}
-              onPress={() => navigation.navigate("SignUp")}
+              onPress={() => {
+                navigation.setParams({
+                  first_name: null,
+                });
+                setUserName("");
+                onChangePass("");
+                onChangeEmail("");
+                navigation.navigate("SignUp");
+              }}
             >
               Sign Up
             </Text>

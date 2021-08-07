@@ -24,7 +24,7 @@ const SignInstyles = EStyleSheet.create({
     justifyContent: "flex-start",
   },
   input: {
-    width: "100%",
+    width: "90%",
     borderBottomWidth: 1,
   },
   label: {

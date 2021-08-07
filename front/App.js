@@ -37,6 +37,7 @@ export default function App() {
           />
           <Stack.Screen
             name="SignIn"
+            initialParams={{ emailFromSignUp: null }}
             component={SignIn}
             options={{
               headerShown: false,
